@@ -1,0 +1,3 @@
+/Users/mmarss/mephi/UIR/build/CMakeFiles/uir_affine.dir
+/Users/mmarss/mephi/UIR/build/CMakeFiles/edit_cache.dir
+/Users/mmarss/mephi/UIR/build/CMakeFiles/rebuild_cache.dir

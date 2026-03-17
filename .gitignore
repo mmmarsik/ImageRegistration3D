@@ -1,0 +1,5 @@
+.venv
+.vscode
+UIR/run_roi250_var25.sh
+UIR/run_roi250_var100.sh
+UIR/src/__pycache__
