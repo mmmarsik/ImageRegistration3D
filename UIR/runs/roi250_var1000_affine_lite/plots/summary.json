@@ -1,0 +1,13 @@
+{
+  "run_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/roi250_var1000_identity",
+  "roi_size_xyz": [
+    250,
+    250,
+    250
+  ],
+  "matrix_frobenius_error": 0.17301755808209268,
+  "noise_mean": 0.1015939861536026,
+  "noise_std": 31.392839431762695,
+  "noise_min": -121.0,
+  "noise_max": 168.0
+}

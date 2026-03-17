@@ -6,6 +6,8 @@ from pathlib import Path
 import re
 
 import cv2
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy as np
@@ -159,7 +161,7 @@ def main() -> int:
     frob = plot_matrix_comparison(expected_roi, estimated, plots_dir / "matrix_comparison.png")
     noise_stats = plot_noise_effect(
         run_dir / "volume_B_roi250_clean.nii",
-        run_dir / "volume_B_roi250_noise_var_0025.nii",
+        run_dir / "volume_B_roi250_noise_var_1000.nii",
         plots_dir / "noise_effect.png",
     )
 

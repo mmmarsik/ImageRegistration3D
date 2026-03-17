@@ -1,5 +1,5 @@
 CMakeFiles/uir_affine.dir/src/main.cpp.o: \
-  /Users/mmarss/mephi/UIR/src/main.cpp \
+  /Users/mmarss/study/science/ImageRegistration3D/UIR/src/main.cpp \
   /opt/homebrew/Cellar/opencv/4.13.0_6/include/opencv4/opencv2/opencv.hpp \
   /opt/homebrew/Cellar/opencv/4.13.0_6/include/opencv4/opencv2/opencv_modules.hpp \
   /opt/homebrew/Cellar/opencv/4.13.0_6/include/opencv4/opencv2/core.hpp \

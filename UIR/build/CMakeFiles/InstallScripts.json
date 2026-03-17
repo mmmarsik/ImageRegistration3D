@@ -1,7 +1,7 @@
 {
 	"InstallScripts" : 
 	[
-		"/Users/mmarss/mephi/UIR/build/cmake_install.cmake"
+		"/Users/mmarss/study/science/ImageRegistration3D/UIR/build/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

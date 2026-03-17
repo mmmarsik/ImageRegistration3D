@@ -1,0 +1,13 @@
+{
+  "run_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/roi250_var1000_affine_hard",
+  "roi_size_xyz": [
+    250,
+    250,
+    250
+  ],
+  "matrix_frobenius_error": 395.68274742064426,
+  "noise_mean": 0.10479673743247986,
+  "noise_std": 31.382843017578125,
+  "noise_min": -126.0,
+  "noise_max": 168.0
+}

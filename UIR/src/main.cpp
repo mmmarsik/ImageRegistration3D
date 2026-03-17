@@ -16,6 +16,14 @@ namespace fs = std::filesystem;
 #define UIR_PROJECT_DIR "."
 #endif
 
+cv::Matx44d make_translation(double tx, double ty, double tz);
+cv::Matx44d make_rotation_x_deg(double angle_deg);
+cv::Matx44d make_rotation_y_deg(double angle_deg);
+cv::Matx44d make_rotation_z_deg(double angle_deg);
+cv::Matx44d make_scale(double sx, double sy, double sz);
+cv::Matx44d make_shear(double sh_xy, double sh_xz, double sh_yx,
+                       double sh_yz, double sh_zx, double sh_zy);
+
 namespace
 {
 constexpr int kVolumeSizeX = 500;
@@ -79,8 +87,22 @@ cv::Mat read_gray_u16_png(const fs::path &path)
 
 cv::Matx44d build_experiment_transform()
 {
-    // Noise experiments compare the volume against itself before adding noise.
-    return cv::Matx44d::eye();
+    const double cx = 0.5 * (kVolumeSizeX - 1);
+    const double cy = 0.5 * (kVolumeSizeY - 1);
+    const double cz = 0.5 * (kVolumeSizeZ - 1);
+
+    const cv::Matx44d to_center = make_translation(-cx, -cy, -cz);
+    const cv::Matx44d from_center = make_translation(cx, cy, cz);
+
+    const cv::Matx44d rotation =
+        make_rotation_z_deg(74.0) *
+        make_rotation_y_deg(-58.0) *
+        make_rotation_x_deg(41.0);
+
+    const cv::Matx44d scale = make_scale(1.80, 0.85, 1.55);
+    const cv::Matx44d shear = make_shear(0.08, -0.06, 0.05, 0.07, -0.05, 0.03);
+    const cv::Matx44d translation = make_translation(32.0, -24.0, 18.0);
+    return translation * from_center * shear * scale * rotation * to_center;
 }
 } // namespace
 
