@@ -1,4 +1,61 @@
 .venv
+.venv-container
 .vscode
-UIR/run_*
+.idea
+.cache
+.config
+.DS_Store
+UIR/run_variance*
 UIR/src/__pycache__
+cmake-build-*/
+CMakeUserPresets.json
+
+# Local build artifacts
+build/
+UIR/build/
+UIR/build-container/
+SIFT3D/build/
+SIFT3D/build-container/
+nifti_clib/build-container/
+nifti_clib/build-local/
+nifti_clib/install/
+nifti_clib/install-container/
+
+# Container helpers and local container config
+podman/
+Containerfile
+.containerignore
+
+# Vendored third-party libraries
+SIFT3D/
+nifti_clib/
+UIR/resources/
+
+# Local caches
+**/__pycache__/
+**/.matplotlib/
+
+# Generated run artifacts: ignore everything by default, keep only curated outputs
+UIR/runs/**
+!UIR/runs/**/
+!UIR/runs/**/transform_info.txt
+!UIR/runs/**/summary/
+!UIR/runs/**/summary/*.csv
+!UIR/runs/**/summary/*.json
+!UIR/runs/**/plots/
+!UIR/runs/**/plots/*.png
+!UIR/runs/**/plots/summary.json
+!UIR/runs/**/expected_reg_transform.csv
+!UIR/runs/**/expected_roi_transform.csv
+!UIR/runs/**/transform.csv
+
+# Explicit run artifacts we do not want in git
+UIR/runs/**/.matplotlib/
+UIR/runs/**/transformed_png_stack/
+UIR/runs/**/*.nii
+UIR/runs/**/*.nii.gz
+UIR/runs/**/T_full_3x4.csv
+UIR/runs/**/T_full_4x4.csv
+UIR/runs/**/T_full_inv_4x4.csv
+UIR/runs/**/transform_minus_expected.csv
+UIR/runs/**/matches.csv

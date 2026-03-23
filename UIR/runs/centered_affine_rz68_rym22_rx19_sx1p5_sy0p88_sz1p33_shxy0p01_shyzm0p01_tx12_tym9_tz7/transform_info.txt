@@ -1,0 +1,9 @@
+transform_tag=centered_affine_rz68_rym22_rx19_sx1p5_sy0p88_sz1p33_shxy0p01_shyzm0p01_tx12_tym9_tz7
+formula=translation * from_center * shear * scale * rotation * to_center
+rotation_order=Rz * Ry * Rx
+volume_size=(500, 500, 500)
+center=(249.5, 249.5, 249.5)
+rotation_deg=(rx=19, ry=-22, rz=68)
+scale=(sx=1.5, sy=0.88, sz=1.33)
+shear=(sh_xy=0.01, sh_xz=0, sh_yx=0, sh_yz=-0.01, sh_zx=0, sh_zy=0)
+translation=(tx=12, ty=-9, tz=7)

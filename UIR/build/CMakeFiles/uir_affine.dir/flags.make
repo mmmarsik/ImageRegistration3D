@@ -6,5 +6,5 @@ CXX_DEFINES = -DUIR_PROJECT_DIR=\"/Users/mmarss/study/science/ImageRegistration3
 
 CXX_INCLUDES = -isystem /opt/homebrew/Cellar/opencv/4.13.0_6/include/opencv4
 
-CXX_FLAGS = -std=c++17
+CXX_FLAGS = -O3 -DNDEBUG -std=c++17
 

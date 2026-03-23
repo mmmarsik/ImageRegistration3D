@@ -9,6 +9,7 @@
 #include <cmath>
 #include <fstream>
 #include <iomanip>
+#include <sstream>
 
 namespace fs = std::filesystem;
 
@@ -29,6 +30,110 @@ namespace
 constexpr int kVolumeSizeX = 500;
 constexpr int kVolumeSizeY = 500;
 constexpr int kVolumeSizeZ = 500;
+
+struct ExperimentTransformSpec
+{
+    double rot_x_deg;
+    double rot_y_deg;
+    double rot_z_deg;
+    double scale_x;
+    double scale_y;
+    double scale_z;
+    double sh_xy;
+    double sh_xz;
+    double sh_yx;
+    double sh_yz;
+    double sh_zx;
+    double sh_zy;
+    double tx;
+    double ty;
+    double tz;
+};
+
+const ExperimentTransformSpec &experiment_transform_spec()
+{
+    static const ExperimentTransformSpec spec{
+        19.0, -22.0, 68.0,
+        1.5, 0.88, 1.33,
+        0.01, 0.0, 0.0, -0.01, 0.0, 0.0,
+        12.0, -9.0, 7.0};
+    return spec;
+}
+
+std::string format_slug_value(double value)
+{
+    std::ostringstream out;
+    out << std::fixed << std::setprecision(4) << value;
+    std::string s = out.str();
+
+    while (!s.empty() && s.back() == '0')
+    {
+        s.pop_back();
+    }
+    if (!s.empty() && s.back() == '.')
+    {
+        s.pop_back();
+    }
+    if (s.empty())
+    {
+        s = "0";
+    }
+
+    std::replace(s.begin(), s.end(), '-', 'm');
+    std::replace(s.begin(), s.end(), '.', 'p');
+    return s;
+}
+
+std::string experiment_transform_tag()
+{
+    const ExperimentTransformSpec &spec = experiment_transform_spec();
+
+    std::ostringstream out;
+    out << "centered_affine"
+        << "_rz" << format_slug_value(spec.rot_z_deg)
+        << "_ry" << format_slug_value(spec.rot_y_deg)
+        << "_rx" << format_slug_value(spec.rot_x_deg)
+        << "_sx" << format_slug_value(spec.scale_x)
+        << "_sy" << format_slug_value(spec.scale_y)
+        << "_sz" << format_slug_value(spec.scale_z)
+        << "_shxy" << format_slug_value(spec.sh_xy)
+        << "_shyz" << format_slug_value(spec.sh_yz)
+        << "_tx" << format_slug_value(spec.tx)
+        << "_ty" << format_slug_value(spec.ty)
+        << "_tz" << format_slug_value(spec.tz);
+    return out.str();
+}
+
+std::string experiment_transform_description()
+{
+    const ExperimentTransformSpec &spec = experiment_transform_spec();
+    const double cx = 0.5 * (kVolumeSizeX - 1);
+    const double cy = 0.5 * (kVolumeSizeY - 1);
+    const double cz = 0.5 * (kVolumeSizeZ - 1);
+
+    std::ostringstream out;
+    out << "transform_tag=" << experiment_transform_tag() << "\n";
+    out << "formula=translation * from_center * shear * scale * rotation * to_center\n";
+    out << "rotation_order=Rz * Ry * Rx\n";
+    out << "volume_size=(" << kVolumeSizeX << ", " << kVolumeSizeY << ", " << kVolumeSizeZ << ")\n";
+    out << "center=(" << cx << ", " << cy << ", " << cz << ")\n";
+    out << "rotation_deg=(rx=" << spec.rot_x_deg
+        << ", ry=" << spec.rot_y_deg
+        << ", rz=" << spec.rot_z_deg << ")\n";
+    out << "scale=(sx=" << spec.scale_x
+        << ", sy=" << spec.scale_y
+        << ", sz=" << spec.scale_z << ")\n";
+    out << "shear=(sh_xy=" << spec.sh_xy
+        << ", sh_xz=" << spec.sh_xz
+        << ", sh_yx=" << spec.sh_yx
+        << ", sh_yz=" << spec.sh_yz
+        << ", sh_zx=" << spec.sh_zx
+        << ", sh_zy=" << spec.sh_zy << ")\n";
+    out << "translation=(tx=" << spec.tx
+        << ", ty=" << spec.ty
+        << ", tz=" << spec.tz << ")\n";
+    return out.str();
+}
 
 fs::path default_input_stack_dir()
 {
@@ -87,6 +192,7 @@ cv::Mat read_gray_u16_png(const fs::path &path)
 
 cv::Matx44d build_experiment_transform()
 {
+    const ExperimentTransformSpec &spec = experiment_transform_spec();
     const double cx = 0.5 * (kVolumeSizeX - 1);
     const double cy = 0.5 * (kVolumeSizeY - 1);
     const double cz = 0.5 * (kVolumeSizeZ - 1);
@@ -95,13 +201,14 @@ cv::Matx44d build_experiment_transform()
     const cv::Matx44d from_center = make_translation(cx, cy, cz);
 
     const cv::Matx44d rotation =
-        make_rotation_z_deg(74.0) *
-        make_rotation_y_deg(-58.0) *
-        make_rotation_x_deg(41.0);
+        make_rotation_z_deg(spec.rot_z_deg) *
+        make_rotation_y_deg(spec.rot_y_deg) *
+        make_rotation_x_deg(spec.rot_x_deg);
 
-    const cv::Matx44d scale = make_scale(1.80, 0.85, 1.55);
-    const cv::Matx44d shear = make_shear(0.08, -0.06, 0.05, 0.07, -0.05, 0.03);
-    const cv::Matx44d translation = make_translation(32.0, -24.0, 18.0);
+    const cv::Matx44d scale = make_scale(spec.scale_x, spec.scale_y, spec.scale_z);
+    const cv::Matx44d shear = make_shear(
+        spec.sh_xy, spec.sh_xz, spec.sh_yx, spec.sh_yz, spec.sh_zx, spec.sh_zy);
+    const cv::Matx44d translation = make_translation(spec.tx, spec.ty, spec.tz);
     return translation * from_center * shear * scale * rotation * to_center;
 }
 } // namespace
@@ -434,8 +541,33 @@ void write_mat34_csv(const cv::Matx44d &mat, const fs::path &path)
     }
 }
 
+void write_text_file(const fs::path &path, const std::string &contents)
+{
+    std::ofstream out(path);
+    if (!out)
+    {
+        throw std::runtime_error("Failed to open output file: " + path.string());
+    }
+    out << contents;
+}
+
 int main(int argc, char **argv)
 {
+    if (argc == 2)
+    {
+        const std::string mode = argv[1];
+        if (mode == "--transform-tag")
+        {
+            std::cout << experiment_transform_tag() << "\n";
+            return 0;
+        }
+        if (mode == "--transform-description")
+        {
+            std::cout << experiment_transform_description();
+            return 0;
+        }
+    }
+
     Image3D img;
     fs::path out_dir = fs::path(UIR_PROJECT_DIR) / "resources" / "identity_copy";
     fs::path artifact_dir = out_dir.parent_path();
@@ -466,6 +598,7 @@ int main(int argc, char **argv)
     write_mat44_csv(T.inv(), artifact_dir / "T_full_inv_4x4.csv");
     write_mat34_csv(T, artifact_dir / "T_full_3x4.csv");
     write_mat34_csv(T.inv(), artifact_dir / "expected_reg_transform.csv");
+    write_text_file(artifact_dir / "transform_info.txt", experiment_transform_description());
 
     std::vector<uint16_t> out = img.apply_affine_transform(T);
     img.save_png_stack(out, out_dir);
