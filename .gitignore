@@ -1,3 +1,9 @@
+# Repository policy: keep only UIR tracked at the repo root
+/*
+!/.gitignore
+!/UIR/
+!/UIR/**
+
 .venv
 .venv-container
 .vscode
