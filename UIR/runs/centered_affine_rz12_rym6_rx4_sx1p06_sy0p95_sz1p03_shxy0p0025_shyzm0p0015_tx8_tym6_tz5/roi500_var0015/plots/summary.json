@@ -1,0 +1,36 @@
+{
+  "run_dir": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0015",
+  "roi_size_xyz": [
+    500,
+    500,
+    500
+  ],
+  "expected_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0015/expected_roi_transform.csv",
+  "estimated_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0015/transform.csv",
+  "transform_diff_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0015/plots/transform_minus_expected.csv",
+  "noisy_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0015/volume_B_roi500_noise_var_0015.nii",
+  "matches_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0015/matches.csv",
+  "match_count": 11156,
+  "matrix_frobenius_error": 0.05454410562018765,
+  "linear_frobenius_error": 0.000253643351313369,
+  "translation_l2_error": 0.05454351586537597,
+  "max_abs_matrix_error": 0.0380145893519952,
+  "max_abs_linear_error": 0.00014977531599999483,
+  "max_abs_translation_error": 0.0380145893519952,
+  "translation_error_xyz": [
+    -0.013963189427002476,
+    0.0380145893519952,
+    -0.03653649491099742
+  ],
+  "expected_linear_det": 0.964124912023687,
+  "estimated_linear_det": 0.964244665715695,
+  "linear_det_abs_error": 0.00011975369200800667,
+  "noise_mean": 0.1724240779876709,
+  "noise_std": 3.7698934078216553,
+  "noise_min": -22.0,
+  "noise_max": 21.0,
+  "requested_variance": 15.0,
+  "expected_noise_std": 3.872983346207417,
+  "noise_std_abs_error": 0.10308993838576175,
+  "noise_variance_observed": 14.212096306337173
+}

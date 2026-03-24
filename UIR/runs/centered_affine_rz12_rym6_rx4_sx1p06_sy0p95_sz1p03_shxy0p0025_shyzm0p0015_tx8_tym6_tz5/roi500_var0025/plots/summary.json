@@ -1,0 +1,36 @@
+{
+  "run_dir": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0025",
+  "roi_size_xyz": [
+    500,
+    500,
+    500
+  ],
+  "expected_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0025/expected_roi_transform.csv",
+  "estimated_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0025/transform.csv",
+  "transform_diff_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0025/plots/transform_minus_expected.csv",
+  "noisy_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0025/volume_B_roi500_noise_var_0025.nii",
+  "matches_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0025/matches.csv",
+  "match_count": 10789,
+  "matrix_frobenius_error": 0.0344253888198406,
+  "linear_frobenius_error": 0.00025198780627934766,
+  "translation_l2_error": 0.034424466554221184,
+  "max_abs_matrix_error": 0.02172018942700049,
+  "max_abs_linear_error": 0.00015077531599999583,
+  "max_abs_translation_error": 0.02172018942700049,
+  "translation_error_xyz": [
+    -0.02172018942700049,
+    0.019179589351999482,
+    -0.018585494910993816
+  ],
+  "expected_linear_det": 0.964124912023687,
+  "estimated_linear_det": 0.9642029764092608,
+  "linear_det_abs_error": 7.806438557378392e-05,
+  "noise_mean": 0.22286401689052582,
+  "noise_std": 4.861499786376953,
+  "noise_min": -28.0,
+  "noise_max": 27.0,
+  "requested_variance": 25.0,
+  "expected_noise_std": 5.0,
+  "noise_std_abs_error": 0.13850021362304688,
+  "noise_variance_observed": 23.63418017294316
+}

@@ -1,0 +1,36 @@
+{
+  "run_dir": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0040",
+  "roi_size_xyz": [
+    500,
+    500,
+    500
+  ],
+  "expected_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0040/expected_roi_transform.csv",
+  "estimated_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0040/transform.csv",
+  "transform_diff_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0040/plots/transform_minus_expected.csv",
+  "noisy_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0040/volume_B_roi500_noise_var_0040.nii",
+  "matches_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0040/matches.csv",
+  "match_count": 10437,
+  "matrix_frobenius_error": 0.0860520413836956,
+  "linear_frobenius_error": 0.0002603627603891802,
+  "translation_l2_error": 0.08605164750040677,
+  "max_abs_matrix_error": 0.07271158935199651,
+  "max_abs_linear_error": 0.00015077531599999583,
+  "max_abs_translation_error": 0.07271158935199651,
+  "translation_error_xyz": [
+    0.0402328105730021,
+    0.07271158935199651,
+    -0.02234349491099863
+  ],
+  "expected_linear_det": 0.964124912023687,
+  "estimated_linear_det": 0.9640564079105366,
+  "linear_det_abs_error": 6.850411315040272e-05,
+  "noise_mean": 0.28204545378685,
+  "noise_std": 6.145552635192871,
+  "noise_min": -36.0,
+  "noise_max": 35.0,
+  "requested_variance": 40.0,
+  "expected_noise_std": 6.324555320336759,
+  "noise_std_abs_error": 0.17900268514388795,
+  "noise_variance_observed": 37.76781719192604
+}

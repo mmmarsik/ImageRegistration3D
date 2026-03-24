@@ -36,7 +36,14 @@ UIR/resources/
 **/.matplotlib/
 
 # Generated run artifacts
-UIR/runs/
+UIR/runs/**
+!UIR/runs/
+!UIR/runs/**/
+!UIR/runs/**/plots/
+!UIR/runs/**/plots/**
+!UIR/runs/**/expected*.csv
+!UIR/runs/**/transform.csv
+!UIR/runs/**/transform_info.txt
 UIR/build
 UIR/resources
 
@@ -44,5 +51,4 @@ build
 .cache
 nifti_clib
 SIFT3D
-
 

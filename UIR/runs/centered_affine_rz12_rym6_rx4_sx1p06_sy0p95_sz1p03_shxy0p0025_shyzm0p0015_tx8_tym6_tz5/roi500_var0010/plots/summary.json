@@ -1,0 +1,36 @@
+{
+  "run_dir": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0010",
+  "roi_size_xyz": [
+    500,
+    500,
+    500
+  ],
+  "expected_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0010/expected_roi_transform.csv",
+  "estimated_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0010/transform.csv",
+  "transform_diff_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0010/plots/transform_minus_expected.csv",
+  "noisy_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0010/volume_B_roi500_noise_var_0010.nii",
+  "matches_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0010/matches.csv",
+  "match_count": 11345,
+  "matrix_frobenius_error": 0.05604356883551025,
+  "linear_frobenius_error": 0.00018990697837483706,
+  "translation_l2_error": 0.0560432470790205,
+  "max_abs_matrix_error": 0.044658589351996625,
+  "max_abs_linear_error": 0.00014477531599998983,
+  "max_abs_translation_error": 0.044658589351996625,
+  "translation_error_xyz": [
+    0.010620810573001904,
+    0.044658589351996625,
+    -0.03215049491100075
+  ],
+  "expected_linear_det": 0.964124912023687,
+  "estimated_linear_det": 0.9641976548419929,
+  "linear_det_abs_error": 7.274281830593754e-05,
+  "noise_mean": 0.1405901163816452,
+  "noise_std": 3.0823919773101807,
+  "noise_min": -18.0,
+  "noise_max": 17.0,
+  "requested_variance": 10.0,
+  "expected_noise_std": 3.1622776601683795,
+  "noise_std_abs_error": 0.07988568285819886,
+  "noise_variance_observed": 9.501140301786165
+}

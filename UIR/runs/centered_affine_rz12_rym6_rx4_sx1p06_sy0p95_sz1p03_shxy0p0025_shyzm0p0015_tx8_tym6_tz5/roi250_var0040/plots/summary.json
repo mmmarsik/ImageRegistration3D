@@ -1,0 +1,36 @@
+{
+  "run_dir": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0040",
+  "roi_size_xyz": [
+    250,
+    250,
+    250
+  ],
+  "expected_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0040/expected_roi_transform.csv",
+  "estimated_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0040/transform.csv",
+  "transform_diff_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0040/plots/transform_minus_expected.csv",
+  "noisy_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0040/volume_B_roi250_noise_var_0040.nii",
+  "matches_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0040/matches.csv",
+  "match_count": 1340,
+  "matrix_frobenius_error": 0.2611100051232307,
+  "linear_frobenius_error": 0.0021013779384821134,
+  "translation_l2_error": 0.2611015491838629,
+  "max_abs_matrix_error": 0.21366050532301273,
+  "max_abs_linear_error": 0.0013891282389999482,
+  "max_abs_translation_error": 0.21366050532301273,
+  "translation_error_xyz": [
+    0.21366050532301273,
+    0.06930862310200325,
+    0.13311469571400636
+  ],
+  "expected_linear_det": 0.964124912023687,
+  "estimated_linear_det": 0.9621298252670285,
+  "linear_det_abs_error": 0.001995086756658493,
+  "noise_mean": -0.0009940479649230838,
+  "noise_std": 6.330123424530029,
+  "noise_min": -33.0,
+  "noise_max": 34.0,
+  "requested_variance": 40.0,
+  "expected_noise_std": 6.324555320336759,
+  "noise_std_abs_error": 0.005568104193270251,
+  "noise_variance_observed": 40.070462569783786
+}

@@ -1,0 +1,36 @@
+{
+  "run_dir": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0100",
+  "roi_size_xyz": [
+    250,
+    250,
+    250
+  ],
+  "expected_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0100/expected_roi_transform.csv",
+  "estimated_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0100/transform.csv",
+  "transform_diff_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0100/plots/transform_minus_expected.csv",
+  "noisy_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0100/volume_B_roi250_noise_var_0100.nii",
+  "matches_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0100/matches.csv",
+  "match_count": 1174,
+  "matrix_frobenius_error": 0.16351837552133058,
+  "linear_frobenius_error": 0.002316669527023516,
+  "translation_l2_error": 0.16350196382746432,
+  "max_abs_matrix_error": 0.14808150532301312,
+  "max_abs_linear_error": 0.0016371282389999742,
+  "max_abs_translation_error": 0.14808150532301312,
+  "translation_error_xyz": [
+    0.14808150532301312,
+    0.05750262310200327,
+    0.03870669571400853
+  ],
+  "expected_linear_det": 0.964124912023687,
+  "estimated_linear_det": 0.9620353276338637,
+  "linear_det_abs_error": 0.002089584389823318,
+  "noise_mean": -0.0013787519419565797,
+  "noise_std": 10.002392768859863,
+  "noise_min": -52.0,
+  "noise_max": 53.0,
+  "requested_variance": 100.0,
+  "expected_noise_std": 10.0,
+  "noise_std_abs_error": 0.0023927688598632812,
+  "noise_variance_observed": 100.04786110254008
+}

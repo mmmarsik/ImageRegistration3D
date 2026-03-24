@@ -1,0 +1,36 @@
+{
+  "run_dir": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0045",
+  "roi_size_xyz": [
+    500,
+    500,
+    500
+  ],
+  "expected_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0045/expected_roi_transform.csv",
+  "estimated_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0045/transform.csv",
+  "transform_diff_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0045/plots/transform_minus_expected.csv",
+  "noisy_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0045/volume_B_roi500_noise_var_0045.nii",
+  "matches_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0045/matches.csv",
+  "match_count": 10362,
+  "matrix_frobenius_error": 0.037055407719954005,
+  "linear_frobenius_error": 0.00017722909935861172,
+  "translation_l2_error": 0.03705498389067748,
+  "max_abs_matrix_error": 0.027444589351993898,
+  "max_abs_linear_error": 0.0001317753159999907,
+  "max_abs_translation_error": 0.027444589351993898,
+  "translation_error_xyz": [
+    -0.013906189427004279,
+    0.027444589351993898,
+    -0.020651494911000157
+  ],
+  "expected_linear_det": 0.964124912023687,
+  "estimated_linear_det": 0.9642396607717478,
+  "linear_det_abs_error": 0.00011474874806083335,
+  "noise_mean": 0.29924219846725464,
+  "noise_std": 6.517570972442627,
+  "noise_min": -38.0,
+  "noise_max": 37.0,
+  "requested_variance": 45.0,
+  "expected_noise_std": 6.708203932499369,
+  "noise_std_abs_error": 0.19063296005674246,
+  "noise_variance_observed": 42.47873138082673
+}

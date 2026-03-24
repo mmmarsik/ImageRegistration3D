@@ -1,0 +1,36 @@
+{
+  "run_dir": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0035",
+  "roi_size_xyz": [
+    250,
+    250,
+    250
+  ],
+  "expected_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0035/expected_roi_transform.csv",
+  "estimated_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0035/transform.csv",
+  "transform_diff_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0035/plots/transform_minus_expected.csv",
+  "noisy_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0035/volume_B_roi250_noise_var_0035.nii",
+  "matches_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi250_var0035/matches.csv",
+  "match_count": 1348,
+  "matrix_frobenius_error": 0.16787474775685796,
+  "linear_frobenius_error": 0.0018608641123605586,
+  "translation_l2_error": 0.16786443375290672,
+  "max_abs_matrix_error": 0.16555250532301358,
+  "max_abs_linear_error": 0.0010921282389999565,
+  "max_abs_translation_error": 0.16555250532301358,
+  "translation_error_xyz": [
+    0.16555250532301358,
+    -0.0065563768979970405,
+    0.026978695714007017
+  ],
+  "expected_linear_det": 0.964124912023687,
+  "estimated_linear_det": 0.9629032717878073,
+  "linear_det_abs_error": 0.001221640235879673,
+  "noise_mean": -0.0009134080028161407,
+  "noise_std": 5.92206335067749,
+  "noise_min": -31.0,
+  "noise_max": 31.0,
+  "requested_variance": 35.0,
+  "expected_noise_std": 5.916079783099616,
+  "noise_std_abs_error": 0.005983567577874105,
+  "noise_variance_observed": 35.0708343294375
+}
