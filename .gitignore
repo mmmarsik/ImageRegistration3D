@@ -1,9 +1,3 @@
-# Repository policy: keep only UIR tracked at the repo root
-/*
-!/.gitignore
-!/UIR/
-!/UIR/**
-
 .venv
 .venv-container
 .vscode
@@ -41,27 +35,14 @@ UIR/resources/
 **/__pycache__/
 **/.matplotlib/
 
-# Generated run artifacts: ignore everything by default, keep only curated outputs
-UIR/runs/**
-!UIR/runs/**/
-!UIR/runs/**/transform_info.txt
-!UIR/runs/**/summary/
-!UIR/runs/**/summary/*.csv
-!UIR/runs/**/summary/*.json
-!UIR/runs/**/plots/
-!UIR/runs/**/plots/*.png
-!UIR/runs/**/plots/summary.json
-!UIR/runs/**/expected_reg_transform.csv
-!UIR/runs/**/expected_roi_transform.csv
-!UIR/runs/**/transform.csv
+# Generated run artifacts
+UIR/runs/
+UIR/build
+UIR/resources
 
-# Explicit run artifacts we do not want in git
-UIR/runs/**/.matplotlib/
-UIR/runs/**/transformed_png_stack/
-UIR/runs/**/*.nii
-UIR/runs/**/*.nii.gz
-UIR/runs/**/T_full_3x4.csv
-UIR/runs/**/T_full_4x4.csv
-UIR/runs/**/T_full_inv_4x4.csv
-UIR/runs/**/transform_minus_expected.csv
-UIR/runs/**/matches.csv
+build
+.cache
+nifti_clib
+SIFT3D
+
+

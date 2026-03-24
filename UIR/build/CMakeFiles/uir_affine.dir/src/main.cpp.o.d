@@ -674,7 +674,6 @@ CMakeFiles/uir_affine.dir/src/main.cpp.o: \
   /opt/homebrew/Cellar/opencv/4.13.0_6/include/opencv4/opencv2/core/neon_utils.hpp \
   /opt/homebrew/Cellar/opencv/4.13.0_6/include/opencv4/opencv2/core/vsx_utils.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/assert.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
   /opt/homebrew/Cellar/opencv/4.13.0_6/include/opencv4/opencv2/core/check.hpp \
   /opt/homebrew/Cellar/opencv/4.13.0_6/include/opencv4/opencv2/core/traits.hpp \
