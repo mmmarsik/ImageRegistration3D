@@ -1,0 +1,36 @@
+{
+  "run_dir": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0300",
+  "roi_size_xyz": [
+    500,
+    500,
+    500
+  ],
+  "expected_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0300/expected_roi_transform.csv",
+  "estimated_transform_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0300/transform.csv",
+  "transform_diff_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0300/plots/transform_minus_expected.csv",
+  "noisy_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0300/volume_B_roi500_noise_var_0300.nii",
+  "matches_path": "/workspace/ImageRegistration3D/UIR/runs/centered_affine_rz12_rym6_rx4_sx1p06_sy0p95_sz1p03_shxy0p0025_shyzm0p0015_tx8_tym6_tz5/roi500_var0300/matches.csv",
+  "match_count": 8033,
+  "matrix_frobenius_error": 0.13155826641511717,
+  "linear_frobenius_error": 0.0003530560037181692,
+  "translation_l2_error": 0.13155779267534545,
+  "max_abs_matrix_error": 0.11167649491099496,
+  "max_abs_linear_error": 0.0001700132949999933,
+  "max_abs_translation_error": 0.11167649491099496,
+  "translation_error_xyz": [
+    -0.020458189427003504,
+    0.06646258935199967,
+    -0.11167649491099496
+  ],
+  "expected_linear_det": 0.964124912023687,
+  "estimated_linear_det": 0.9640936074622395,
+  "linear_det_abs_error": 3.130456144750937e-05,
+  "noise_mean": 0.7747272849082947,
+  "noise_std": 16.810827255249023,
+  "noise_min": -98.0,
+  "noise_max": 95.0,
+  "requested_variance": 300.0,
+  "expected_noise_std": 17.320508075688775,
+  "noise_std_abs_error": 0.5096808204397512,
+  "noise_variance_observed": 282.6039130058234
+}
