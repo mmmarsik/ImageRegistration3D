@@ -5,8 +5,13 @@ from pathlib import Path
 import nibabel as nib
 import numpy as np
 
-from uir.analysis.transform_metrics import count_match_rows
+from uir.analysis.transform_metrics import (
+    count_match_rows,
+    match_residual_stats,
+    write_match_residuals_csv,
+)
 from uir.io.png_stack import inspect_png_stack
+from uir.reporting.single_case_plots import plot_match_residual_diagnostic
 from uir.transforms.io import read_transform_csv
 
 
@@ -59,6 +64,15 @@ def summarize_real_pair_case(
     if transform_path.exists():
         estimated = read_transform_csv(transform_path)
         linear = estimated[:, :3]
+        plots_dir = run_dir / "plots"
+        match_residuals_path = plots_dir / "match_residuals.csv"
+        match_residual_diagnostic_path = plots_dir / "match_residual_diagnostic.png"
+        if matches_path.exists() and summary["match_count"] > 0:
+            write_match_residuals_csv(match_residuals_path, matches_path, estimated)
+            plot_match_residual_diagnostic(matches_path, estimated, match_residual_diagnostic_path)
+            summary.update(match_residual_stats(matches_path, estimated))
+            summary["match_residuals_path"] = str(match_residuals_path)
+            summary["match_residual_diagnostic_path"] = str(match_residual_diagnostic_path)
         summary["estimated_transform_rows"] = int(estimated.shape[0])
         summary["estimated_transform_cols"] = int(estimated.shape[1])
         summary["estimated_linear_det"] = float(np.linalg.det(linear))

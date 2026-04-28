@@ -8,7 +8,12 @@ from uir.analysis.synthetic_runs import (
     render_synthetic_summary_lines,
     write_synthetic_outputs,
 )
-from uir.reporting.aggregate_plots import plot_synthetic_metric
+from uir.reporting.aggregate_plots import (
+    plot_error_heatmap,
+    plot_noise_accuracy,
+    plot_noise_sweep,
+    plot_reliability_curve,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -25,30 +30,33 @@ def main() -> int:
     csv_path, json_path = write_synthetic_outputs(args.runs_root, rows)
     out_dir = args.runs_root / "summary"
 
-    error_plot = out_dir / "synthetic_translation_error_vs_awgn_variance.png"
-    matches_plot = out_dir / "synthetic_matches_vs_awgn_variance.png"
+    heatmap_plot = out_dir / "synthetic_error_heatmap.png"
+    reliability_plot = out_dir / "synthetic_reliability_curve.png"
+    noise_accuracy_plot = out_dir / "synthetic_noise_accuracy.png"
 
-    plot_synthetic_metric(
-        rows,
-        error_plot,
-        metric="translation_l2_error_voxels",
-        ylabel="translation L2 error (voxels)",
-        title="Synthetic Translation Error vs AWGN Variance",
-    )
-    plot_synthetic_metric(
-        rows,
-        matches_plot,
-        metric="match_count",
-        ylabel="match_count",
-        title="Synthetic Matches vs AWGN Variance",
-    )
+    plot_error_heatmap(rows, heatmap_plot)
+    plot_reliability_curve(rows, reliability_plot)
+    plot_noise_accuracy(rows, noise_accuracy_plot)
+
+    roi_sizes = sorted({int(r["roi_size"]) for r in rows})
+    sweep_metrics = [
+        ("translation_l2_error_voxels", "Translation L2 error (voxels)", "translation_l2"),
+        ("linear_rms_error", "Linear RMS error", "linear_rms"),
+        ("max_abs_transform_element_error", "Max abs transform element error", "max_abs"),
+    ]
+    for roi_size in roi_sizes:
+        for metric, ylabel, metric_slug in sweep_metrics:
+            noise_sweep_plot = out_dir / f"synthetic_noise_sweep_roi{roi_size}_{metric_slug}.png"
+            plot_noise_sweep(rows, noise_sweep_plot, roi_size=roi_size, metric=metric, ylabel=ylabel)
+            print(f"Noise sweep roi={roi_size} {metric_slug}: {noise_sweep_plot}")
 
     for line in render_synthetic_summary_lines(rows):
         print(line)
     print(f"CSV: {csv_path}")
     print(f"JSON: {json_path}")
-    print(f"Error plot: {error_plot}")
-    print(f"Matches plot: {matches_plot}")
+    print(f"Heatmap: {heatmap_plot}")
+    print(f"Reliability: {reliability_plot}")
+    print(f"Noise accuracy: {noise_accuracy_plot}")
     return 0
 
 

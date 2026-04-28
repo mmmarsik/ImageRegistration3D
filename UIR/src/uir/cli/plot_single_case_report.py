@@ -9,12 +9,15 @@ from uir.analysis.transform_metrics import (
     count_match_rows,
     infer_noisy_path,
     infer_requested_variance,
+    match_residual_stats,
     matrix_error_stats,
+    write_match_residuals_csv,
     write_matrix_element_errors_csv,
 )
 from uir.io.png_stack import inspect_png_stack
 from uir.reporting.single_case_plots import (
     plot_matrix_error_diagnostic,
+    plot_match_residual_diagnostic,
     plot_noise_effect,
 )
 from uir.transforms.io import read_transform_csv, write_transform_csv
@@ -80,6 +83,8 @@ def main() -> int:
     diff_path = plots_dir / "transform_minus_expected.csv"
     element_errors_path = plots_dir / "matrix_element_errors.csv"
     diagnostic_path = plots_dir / "matrix_error_diagnostic.png"
+    match_residuals_path = plots_dir / "match_residuals.csv"
+    match_residual_diagnostic_path = plots_dir / "match_residual_diagnostic.png"
     summary_path = plots_dir / "summary.json"
     previous_summary = {}
     if summary_path.exists():
@@ -89,9 +94,12 @@ def main() -> int:
     write_transform_csv(expected_roi_path, expected_roi)
     write_transform_csv(diff_path, estimated - expected_roi)
     write_matrix_element_errors_csv(element_errors_path, expected_roi, estimated)
+    write_match_residuals_csv(match_residuals_path, matches_path, estimated)
 
     plot_matrix_error_diagnostic(expected_roi, estimated, diagnostic_path)
+    plot_match_residual_diagnostic(matches_path, estimated, match_residual_diagnostic_path)
     error_stats = matrix_error_stats(expected_roi, estimated)
+    residual_stats = match_residual_stats(matches_path, estimated)
     noise_keys = [
         "noise_mean",
         "noise_std",
@@ -139,11 +147,14 @@ def main() -> int:
         "transform_diff_path": str(diff_path),
         "matrix_element_errors_path": str(element_errors_path),
         "matrix_error_diagnostic_path": str(diagnostic_path),
+        "match_residuals_path": str(match_residuals_path),
+        "match_residual_diagnostic_path": str(match_residual_diagnostic_path),
         "noise_reference_path": str(noise_reference_path),
         "noisy_path": str(noisy_path),
         "matches_path": str(matches_path),
         "match_count": match_count,
         **error_stats,
+        **residual_stats,
         **noise_stats,
     }
     if requested_variance is not None:
@@ -163,10 +174,14 @@ def main() -> int:
     print(f"Transform diff CSV: {diff_path}")
     print(f"Matrix element errors: {element_errors_path}")
     print(f"Matrix error diagnostic: {diagnostic_path}")
+    print(f"Match residuals CSV: {match_residuals_path}")
+    print(f"Match residual diagnostic: {match_residual_diagnostic_path}")
     print(f"Noise effect: {plots_dir / 'noise_effect.png'}")
     print(f"Translation error XYZ: {error_stats['translation_error_xyz']}")
     print(f"Linear RMS error: {error_stats['linear_rms_error']:.6f}")
     print(f"Translation L2 error: {error_stats['translation_l2_error_voxels']:.6f} voxels")
+    print(f"Match residual mean: {residual_stats['match_residual_l2_mean']:.6f} voxels")
+    print(f"Match residual p95: {residual_stats['match_residual_l2_p95']:.6f} voxels")
     if requested_variance is not None:
         print(f"Requested variance: {requested_variance:.0f}")
         print(f"Observed noise std: {noise_stats['noise_std']:.6f}")

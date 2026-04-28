@@ -28,6 +28,140 @@ def count_match_rows(matches_path: Path) -> int:
         return sum(1 for line in f if line.strip())
 
 
+def read_match_points(matches_path: Path) -> tuple[np.ndarray, np.ndarray]:
+    """Read regSift3D matches as source and reference XYZ point arrays."""
+    if not matches_path.exists():
+        return np.empty((0, 3), dtype=np.float64), np.empty((0, 3), dtype=np.float64)
+
+    rows: list[list[float]] = []
+    with matches_path.open("r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                values = [float(x) for x in line.split(",")]
+                if len(values) != 6:
+                    raise RuntimeError(f"Expected 6 columns in {matches_path}, got {len(values)}")
+                rows.append(values)
+
+    if not rows:
+        return np.empty((0, 3), dtype=np.float64), np.empty((0, 3), dtype=np.float64)
+
+    matches = np.asarray(rows, dtype=np.float64)
+    return matches[:, :3], matches[:, 3:]
+
+
+def _as_homogeneous_4x4(mat: np.ndarray) -> np.ndarray:
+    if mat.shape == (4, 4):
+        return mat.astype(np.float64, copy=False)
+    if mat.shape == (3, 4):
+        out = np.eye(4, dtype=np.float64)
+        out[:3, :] = mat
+        return out
+    raise RuntimeError(f"Expected 3x4 or 4x4 transform, got shape {mat.shape}")
+
+
+def apply_transform_to_points(transform: np.ndarray, points_xyz: np.ndarray) -> np.ndarray:
+    mat = _as_homogeneous_4x4(transform)
+    if points_xyz.size == 0:
+        return np.empty((0, 3), dtype=np.float64)
+    points_h = np.c_[points_xyz.astype(np.float64, copy=False), np.ones(points_xyz.shape[0])]
+    return (points_h @ mat.T)[:, :3]
+
+
+def match_residual_rows(
+    matches_path: Path,
+    transform: np.ndarray,
+) -> list[dict[str, float]]:
+    source_xyz, reference_xyz = read_match_points(matches_path)
+    predicted_source_xyz = apply_transform_to_points(transform, reference_xyz)
+    residual_xyz = source_xyz - predicted_source_xyz
+    residual_l2 = np.linalg.norm(residual_xyz, axis=1)
+    raw_delta_xyz = source_xyz - reference_xyz
+    raw_l2 = np.linalg.norm(raw_delta_xyz, axis=1)
+
+    rows: list[dict[str, float]] = []
+    for idx in range(source_xyz.shape[0]):
+        rows.append(
+            {
+                "match_index": float(idx),
+                "source_x": float(source_xyz[idx, 0]),
+                "source_y": float(source_xyz[idx, 1]),
+                "source_z": float(source_xyz[idx, 2]),
+                "reference_x": float(reference_xyz[idx, 0]),
+                "reference_y": float(reference_xyz[idx, 1]),
+                "reference_z": float(reference_xyz[idx, 2]),
+                "predicted_source_x": float(predicted_source_xyz[idx, 0]),
+                "predicted_source_y": float(predicted_source_xyz[idx, 1]),
+                "predicted_source_z": float(predicted_source_xyz[idx, 2]),
+                "residual_x": float(residual_xyz[idx, 0]),
+                "residual_y": float(residual_xyz[idx, 1]),
+                "residual_z": float(residual_xyz[idx, 2]),
+                "residual_l2": float(residual_l2[idx]),
+                "raw_delta_l2": float(raw_l2[idx]),
+            }
+        )
+    return rows
+
+
+def match_residual_stats(matches_path: Path, transform: np.ndarray) -> dict[str, object]:
+    source_xyz, reference_xyz = read_match_points(matches_path)
+    predicted_source_xyz = apply_transform_to_points(transform, reference_xyz)
+    residual_xyz = source_xyz - predicted_source_xyz
+    residual_l2 = np.linalg.norm(residual_xyz, axis=1)
+    raw_l2 = np.linalg.norm(source_xyz - reference_xyz, axis=1)
+
+    if residual_l2.size == 0:
+        return {
+            "match_residual_count": 0,
+            "match_raw_l2_mean": None,
+            "match_residual_l2_mean": None,
+            "match_residual_l2_median": None,
+            "match_residual_l2_rms": None,
+            "match_residual_l2_p95": None,
+            "match_residual_l2_max": None,
+            "match_residual_xyz_mean": None,
+        }
+
+    return {
+        "match_residual_count": int(residual_l2.size),
+        "match_raw_l2_mean": float(np.mean(raw_l2)),
+        "match_raw_l2_median": float(np.median(raw_l2)),
+        "match_raw_l2_max": float(np.max(raw_l2)),
+        "match_residual_l2_mean": float(np.mean(residual_l2)),
+        "match_residual_l2_median": float(np.median(residual_l2)),
+        "match_residual_l2_rms": float(np.sqrt(np.mean(residual_l2 * residual_l2))),
+        "match_residual_l2_p95": float(np.percentile(residual_l2, 95)),
+        "match_residual_l2_max": float(np.max(residual_l2)),
+        "match_residual_xyz_mean": [float(v) for v in np.mean(residual_xyz, axis=0)],
+    }
+
+
+def write_match_residuals_csv(path: Path, matches_path: Path, transform: np.ndarray) -> None:
+    rows = match_residual_rows(matches_path, transform)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "match_index",
+        "source_x",
+        "source_y",
+        "source_z",
+        "reference_x",
+        "reference_y",
+        "reference_z",
+        "predicted_source_x",
+        "predicted_source_y",
+        "predicted_source_z",
+        "residual_x",
+        "residual_y",
+        "residual_z",
+        "residual_l2",
+        "raw_delta_l2",
+    ]
+    with path.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
 def transform_component_name(row: int, col: int) -> str:
     if col == 3:
         return ("tx", "ty", "tz")[row]

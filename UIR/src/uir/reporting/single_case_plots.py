@@ -8,6 +8,11 @@ import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy as np
 
+from uir.analysis.transform_metrics import (
+    apply_transform_to_points,
+    read_match_points,
+)
+
 
 def plot_matrix_error_diagnostic(expected: np.ndarray, estimated: np.ndarray, out_path: Path) -> None:
     diff = estimated - expected
@@ -39,6 +44,55 @@ def plot_matrix_error_diagnostic(expected: np.ndarray, estimated: np.ndarray, ou
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_path, dpi=220)
     plt.close(fig)
+
+
+def plot_match_residual_diagnostic(matches_path: Path, transform: np.ndarray, out_path: Path) -> dict[str, float]:
+    source_xyz, reference_xyz = read_match_points(matches_path)
+    if source_xyz.shape[0] == 0:
+        raise RuntimeError(f"No matches found in {matches_path}")
+
+    predicted_source_xyz = apply_transform_to_points(transform, reference_xyz)
+    residual_xyz = source_xyz - predicted_source_xyz
+    residual_l2 = np.linalg.norm(residual_xyz, axis=1)
+    raw_l2 = np.linalg.norm(source_xyz - reference_xyz, axis=1)
+
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5))
+
+    bins = min(80, max(12, int(np.sqrt(residual_l2.size))))
+    axes[0].hist(raw_l2, bins=bins, alpha=0.55, label="Before transform", color="#777777")
+    axes[0].hist(residual_l2, bins=bins, alpha=0.75, label="After transform", color="#2f6db3")
+    axes[0].set_title(
+        "Matched Point Distances\n"
+        f"after mean={np.mean(residual_l2):.3f}, median={np.median(residual_l2):.3f}, "
+        f"p95={np.percentile(residual_l2, 95):.3f}"
+    )
+    axes[0].set_xlabel("Distance in voxel units")
+    axes[0].set_ylabel("Match count")
+    axes[0].legend()
+    axes[0].grid(True, alpha=0.25)
+
+    order = np.argsort(residual_l2)
+    axes[1].plot(residual_l2[order], color="#2f6db3", linewidth=1.2)
+    axes[1].set_title(f"Sorted Residuals (n={residual_l2.size})")
+    axes[1].set_xlabel("Sorted match index")
+    axes[1].set_ylabel("|source - T(reference)|")
+    axes[1].grid(True, alpha=0.25)
+
+    fig.tight_layout()
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, dpi=220)
+    plt.close(fig)
+
+    return {
+        "match_raw_l2_mean": float(np.mean(raw_l2)),
+        "match_raw_l2_median": float(np.median(raw_l2)),
+        "match_raw_l2_max": float(np.max(raw_l2)),
+        "match_residual_l2_mean": float(np.mean(residual_l2)),
+        "match_residual_l2_median": float(np.median(residual_l2)),
+        "match_residual_l2_rms": float(np.sqrt(np.mean(residual_l2 * residual_l2))),
+        "match_residual_l2_p95": float(np.percentile(residual_l2, 95)),
+        "match_residual_l2_max": float(np.max(residual_l2)),
+    }
 
 
 def plot_noise_effect(
