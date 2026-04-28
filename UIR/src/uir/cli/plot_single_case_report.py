@@ -1,0 +1,179 @@
+from __future__ import annotations
+
+import argparse
+import json
+import math
+from pathlib import Path
+
+from uir.analysis.transform_metrics import (
+    count_match_rows,
+    infer_noisy_path,
+    infer_requested_variance,
+    matrix_error_stats,
+    write_matrix_element_errors_csv,
+)
+from uir.io.png_stack import inspect_png_stack
+from uir.reporting.single_case_plots import (
+    plot_matrix_error_diagnostic,
+    plot_noise_effect,
+)
+from uir.transforms.io import read_transform_csv, write_transform_csv
+from uir.transforms.roi import roi_expected_transform
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Build compact report plots for a single ROI/noise test case."
+    )
+    parser.add_argument("run_dir", type=Path, help="Run directory with base/noisy/results files.")
+    parser.add_argument("--roi-size", nargs=3, type=int, metavar=("X", "Y", "Z"), required=True)
+    parser.add_argument(
+        "--source-stack-dir",
+        type=Path,
+        help="Path to the original PNG stack used as the uncropped source volume.",
+    )
+    parser.add_argument(
+        "--noisy-path",
+        type=Path,
+        help="Path to the noisy ROI NIfTI used for the comparison plots.",
+    )
+    parser.add_argument(
+        "--matches-path",
+        type=Path,
+        help="Path to the CSV file with matched features.",
+    )
+    parser.add_argument(
+        "--noise-reference-path",
+        type=Path,
+        help="Path to the clean or blurred volume used as the AWGN input.",
+    )
+    parser.add_argument("--degradation", choices=("awgn", "blur_awgn"), help="Synthetic degradation chain.")
+    parser.add_argument("--transform-tag", help="Synthetic transform tag.")
+    parser.add_argument("--blur-sigma-xy", type=float, default=0.0, help="Gaussian blur sigma in XY slice units.")
+    parser.add_argument("--awgn-variance", type=float, help="AWGN variance used for the run.")
+    parser.add_argument("--awgn-seed", type=int, default=42, help="AWGN random seed used for the run.")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    run_dir = args.run_dir
+    roi_size_xyz = tuple(args.roi_size)
+
+    source_stack_dir = args.source_stack_dir or (run_dir.parent.parent / "resources" / "bhi_2_2.32um_voi")
+    _, full_shape_xyz, source_observation_model = inspect_png_stack(source_stack_dir)
+
+    expected_full_inv = read_transform_csv(run_dir / "T_full_inv_4x4.csv")
+    expected_roi = roi_expected_transform(expected_full_inv, full_shape_xyz, roi_size_xyz)
+    estimated = read_transform_csv(run_dir / "transform.csv")
+    noisy_path = args.noisy_path or infer_noisy_path(run_dir, roi_size=roi_size_xyz[0])
+    matches_path = args.matches_path or (run_dir / "matches.csv")
+    noise_reference_path = args.noise_reference_path or (run_dir / f"volume_B_roi{roi_size_xyz[0]}_clean.nii")
+    requested_variance = args.awgn_variance
+    if requested_variance is None:
+        requested_variance = infer_requested_variance(noisy_path)
+    degradation = args.degradation or ("blur_awgn" if args.blur_sigma_xy > 0.0 else "awgn")
+    transform_tag = args.transform_tag or run_dir.parent.name
+
+    plots_dir = run_dir / "plots"
+    expected_roi_path = run_dir / "expected_roi_transform.csv"
+    diff_path = plots_dir / "transform_minus_expected.csv"
+    element_errors_path = plots_dir / "matrix_element_errors.csv"
+    diagnostic_path = plots_dir / "matrix_error_diagnostic.png"
+    summary_path = plots_dir / "summary.json"
+    previous_summary = {}
+    if summary_path.exists():
+        previous_summary = json.loads(summary_path.read_text(encoding="utf-8"))
+
+    plots_dir.mkdir(parents=True, exist_ok=True)
+    write_transform_csv(expected_roi_path, expected_roi)
+    write_transform_csv(diff_path, estimated - expected_roi)
+    write_matrix_element_errors_csv(element_errors_path, expected_roi, estimated)
+
+    plot_matrix_error_diagnostic(expected_roi, estimated, diagnostic_path)
+    error_stats = matrix_error_stats(expected_roi, estimated)
+    noise_keys = [
+        "noise_mean",
+        "noise_std",
+        "noise_min",
+        "noise_max",
+        "clean_observation_min",
+        "clean_observation_max",
+        "noisy_observation_min",
+        "noisy_observation_max",
+    ]
+    if noise_reference_path.exists() and noisy_path.exists():
+        noise_stats = plot_noise_effect(
+            noise_reference_path,
+            noisy_path,
+            plots_dir / "noise_effect.png",
+            observation_min=source_observation_model.min_value,
+            observation_max=source_observation_model.max_value,
+        )
+    else:
+        missing_paths = [path for path in (noise_reference_path, noisy_path) if not path.exists()]
+        previous_summary.setdefault("clean_observation_min", source_observation_model.min_value)
+        previous_summary.setdefault("clean_observation_max", source_observation_model.max_value)
+        previous_summary.setdefault("noisy_observation_min", source_observation_model.min_value)
+        previous_summary.setdefault("noisy_observation_max", source_observation_model.max_value)
+        missing_noise_keys = [key for key in noise_keys if key not in previous_summary]
+        if missing_noise_keys:
+            raise RuntimeError(
+                f"Cannot rebuild noise stats because files are missing: {missing_paths}; "
+                f"previous summary is missing keys: {missing_noise_keys}"
+            )
+        noise_stats = {key: previous_summary[key] for key in noise_keys}
+        print(f"Keeping previous noise stats; missing files: {', '.join(str(path) for path in missing_paths)}")
+    match_count = count_match_rows(matches_path)
+
+    summary = {
+        "run_kind": "synthetic",
+        "degradation": degradation,
+        "transform_tag": transform_tag,
+        "run_dir": str(run_dir),
+        "roi_size_xyz": list(roi_size_xyz),
+        "blur_sigma_xy": float(args.blur_sigma_xy),
+        "awgn_seed": int(args.awgn_seed),
+        "expected_transform_path": str(expected_roi_path),
+        "estimated_transform_path": str(run_dir / "transform.csv"),
+        "transform_diff_path": str(diff_path),
+        "matrix_element_errors_path": str(element_errors_path),
+        "matrix_error_diagnostic_path": str(diagnostic_path),
+        "noise_reference_path": str(noise_reference_path),
+        "noisy_path": str(noisy_path),
+        "matches_path": str(matches_path),
+        "match_count": match_count,
+        **error_stats,
+        **noise_stats,
+    }
+    if requested_variance is not None:
+        expected_noise_std = math.sqrt(requested_variance)
+        summary["awgn_variance"] = requested_variance
+        summary["requested_variance"] = requested_variance
+        summary["expected_noise_std"] = expected_noise_std
+        summary["noise_std_abs_error"] = abs(noise_stats["noise_std"] - expected_noise_std)
+        summary["noise_variance_observed"] = noise_stats["noise_std"] ** 2
+    summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+
+    print(f"Plots dir: {plots_dir}")
+    print(f"Expected ROI transform: {expected_roi_path}")
+    print(f"Noisy ROI NIfTI: {noisy_path}")
+    print(f"Matches CSV: {matches_path}")
+    print(f"Match count: {match_count}")
+    print(f"Transform diff CSV: {diff_path}")
+    print(f"Matrix element errors: {element_errors_path}")
+    print(f"Matrix error diagnostic: {diagnostic_path}")
+    print(f"Noise effect: {plots_dir / 'noise_effect.png'}")
+    print(f"Translation error XYZ: {error_stats['translation_error_xyz']}")
+    print(f"Linear RMS error: {error_stats['linear_rms_error']:.6f}")
+    print(f"Translation L2 error: {error_stats['translation_l2_error_voxels']:.6f} voxels")
+    if requested_variance is not None:
+        print(f"Requested variance: {requested_variance:.0f}")
+        print(f"Observed noise std: {noise_stats['noise_std']:.6f}")
+        print(f"Expected noise std: {math.sqrt(requested_variance):.6f}")
+    print(f"Summary: {summary_path}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

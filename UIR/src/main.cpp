@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <cassert>
+#include <cstdlib>
 #include <cstdio>
 #include <cmath>
 #include <fstream>
@@ -50,13 +51,41 @@ struct ExperimentTransformSpec
     double tz;
 };
 
+double env_or_default(const char *name, double default_value)
+{
+    const char *raw = std::getenv(name);
+    if (raw == nullptr || *raw == '\0')
+    {
+        return default_value;
+    }
+
+    char *end = nullptr;
+    const double value = std::strtod(raw, &end);
+    if (end == raw || (end != nullptr && *end != '\0'))
+    {
+        throw std::runtime_error(std::string("Invalid floating-point value for ") + name + ": " + raw);
+    }
+    return value;
+}
+
 const ExperimentTransformSpec &experiment_transform_spec()
 {
     static const ExperimentTransformSpec spec{
-        4.0, -6.0, 12.0,
-        1.06, 0.95, 1.03,
-        0.0025, 0.0, 0.0, -0.0015, 0.0, 0.0,
-        8.0, -6.0, 5.0};
+        env_or_default("UIR_ROT_X_DEG", 4.0),
+        env_or_default("UIR_ROT_Y_DEG", -6.0),
+        env_or_default("UIR_ROT_Z_DEG", 12.0),
+        env_or_default("UIR_SCALE_X", 1.06),
+        env_or_default("UIR_SCALE_Y", 0.95),
+        env_or_default("UIR_SCALE_Z", 1.03),
+        env_or_default("UIR_SH_XY", 0.0025),
+        env_or_default("UIR_SH_XZ", 0.0),
+        env_or_default("UIR_SH_YX", 0.0),
+        env_or_default("UIR_SH_YZ", -0.0015),
+        env_or_default("UIR_SH_ZX", 0.0),
+        env_or_default("UIR_SH_ZY", 0.0),
+        env_or_default("UIR_TX", 8.0),
+        env_or_default("UIR_TY", -6.0),
+        env_or_default("UIR_TZ", 5.0)};
     return spec;
 }
 

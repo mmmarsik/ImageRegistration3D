@@ -1,0 +1,56 @@
+{
+  "mode": "real_pair",
+  "registration_succeeded": false,
+  "reg_exit_code": 1,
+  "run_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_before_to_after/roi64",
+  "before_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/resources/real3d_pair/before_png_stack",
+  "after_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/resources/real3d_pair/after_png_stack",
+  "before_nifti": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_before_to_after/roi64/before.nii",
+  "after_nifti": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_before_to_after/roi64/after.nii",
+  "matches_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_before_to_after/roi64/matches.csv",
+  "transform_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_before_to_after/roi64/transform.csv",
+  "match_count": 0,
+  "before_stack_shape_xyz": [
+    710,
+    333,
+    710
+  ],
+  "after_stack_shape_xyz": [
+    698,
+    333,
+    698
+  ],
+  "before_nifti_shape_xyz": [
+    64,
+    64,
+    64
+  ],
+  "after_nifti_shape_xyz": [
+    64,
+    64,
+    64
+  ],
+  "before_observation_range": [
+    0.0,
+    255.0
+  ],
+  "after_observation_range": [
+    0.0,
+    255.0
+  ],
+  "roi_size_xyz": [
+    64,
+    64,
+    64
+  ],
+  "before_roi_start_xyz": [
+    323,
+    134,
+    323
+  ],
+  "after_roi_start_xyz": [
+    317,
+    134,
+    317
+  ]
+}

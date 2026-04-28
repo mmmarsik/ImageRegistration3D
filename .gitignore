@@ -5,7 +5,10 @@
 .cache
 .config
 .DS_Store
-UIR/run_variance*
+.ai_project_notes.md
+UIR/docs/
+README.md
+UIR/**/README.md
 UIR/src/__pycache__
 cmake-build-*/
 CMakeUserPresets.json
@@ -44,6 +47,9 @@ UIR/runs/**
 !UIR/runs/**/expected*.csv
 !UIR/runs/**/transform.csv
 !UIR/runs/**/transform_info.txt
+!UIR/runs/**/summary.json
+!UIR/runs/**/summary/
+!UIR/runs/**/summary/**
 UIR/build
 UIR/resources
 
@@ -51,4 +57,3 @@ build
 .cache
 nifti_clib
 SIFT3D
-
