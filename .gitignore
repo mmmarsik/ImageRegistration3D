@@ -1,6 +1,3 @@
-# === Markdown: keep ALL .md out of git (per request) ===
-# Прим.: чтобы исключение для конкретного файла — раскомментируй, напр.:
-# !AGENTS.md
 *.md
 
 # === Environments / editors ===
@@ -10,7 +7,7 @@
 .config
 CMakeUserPresets.json
 
-# === Build artifacts (генерируются, не код) ===
+# === Build artifacts 
 build/
 UIR/build/
 UIR/build_worker_*/
@@ -19,11 +16,11 @@ nifti_clib/build-local/
 nifti_clib/install/
 cmake-build-*/
 
-# === Vendored third-party libraries (чужой код) ===
+# === Vendored third-party libraries 
 SIFT3D/
 nifti_clib/
 
-# === Large raw input datasets (данные, не код и не runs) ===
+# === Large raw input datasets 
 UIR/resources/
 
 # === Caches ===
@@ -32,13 +29,6 @@ UIR/resources/
 **/__pycache__/
 **/.matplotlib/
 
-# === Heavy regenerable real-pair diagnostic image stacks (~4.2 ГБ) ===
-# Журнал runs (csv/json/txt/summary-плоты) трекается, сами стопки — нет.
 UIR/runs/**/signed_diff_png_stack/
 UIR/runs/**/matched_keypoints_*_png_stack/
 
-# === ЯВНО НЕ игнорируется (трекается) ===
-# UIR/runs/        -> результаты прогонов трекаются (по запросу; ~5.5 ГБ после T001)
-# UIR/src/**       -> код (C++/Python) трекается
-# UIR/*.sh         -> скрипты оркестрации трекаются
-# UIR/resources/   -> НЕ трекается (датасеты: real pair и др. остаются вне git)
