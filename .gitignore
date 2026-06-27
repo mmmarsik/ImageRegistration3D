@@ -1,59 +1,43 @@
+# === Markdown: keep ALL .md out of git (per request) ===
+# Прим.: чтобы исключение для конкретного файла — раскомментируй, напр.:
+# !AGENTS.md
+*.md
+
+# === Environments / editors ===
 .venv
-.venv-container
 .vscode
 .idea
-.cache
 .config
-.DS_Store
-.ai_project_notes.md
-UIR/docs/
-README.md
-UIR/**/README.md
-UIR/src/__pycache__
-cmake-build-*/
 CMakeUserPresets.json
 
-# Local build artifacts
+# === Build artifacts (генерируются, не код) ===
 build/
 UIR/build/
-UIR/build-container/
 SIFT3D/build/
-SIFT3D/build-container/
-nifti_clib/build-container/
 nifti_clib/build-local/
 nifti_clib/install/
-nifti_clib/install-container/
+cmake-build-*/
 
-# Container helpers and local container config
-podman/
-Containerfile
-.containerignore
-
-# Vendored third-party libraries
+# === Vendored third-party libraries (чужой код) ===
 SIFT3D/
 nifti_clib/
+
+# === Large raw input datasets (данные, не код и не runs) ===
 UIR/resources/
 
-# Local caches
+# === Caches ===
+.cache
+.DS_Store
 **/__pycache__/
 **/.matplotlib/
 
-# Generated run artifacts
-UIR/runs/**
-!UIR/runs/
-!UIR/runs/**/
-!UIR/runs/**/plots/
-!UIR/runs/**/plots/**
-!UIR/runs/**/expected*.csv
-!UIR/runs/**/transform.csv
-!UIR/runs/**/transform_info.txt
-!UIR/runs/**/summary.json
-!UIR/runs/**/summary/
-!UIR/runs/**/summary/**
-UIR/build
-UIR/resources
+# === Heavy regenerable real-pair diagnostic image stacks (~4.2 ГБ) ===
+# Журнал runs (csv/json/txt/summary-плоты) трекается, сами стопки — нет.
+UIR/runs/**/signed_diff_png_stack/
+UIR/runs/**/matched_keypoints_*_png_stack/
 
-build
-.cache
-nifti_clib
-SIFT3D
+# === ЯВНО НЕ игнорируется (трекается) ===
+# UIR/runs/        -> результаты прогонов трекаются (по запросу; ~5.5 ГБ после T001)
+# UIR/src/**       -> код (C++/Python) трекается
+# UIR/*.sh         -> скрипты оркестрации трекаются
+# UIR/resources/   -> НЕ трекается (датасеты: real pair и др. остаются вне git)
