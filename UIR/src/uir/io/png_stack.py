@@ -21,6 +21,13 @@ class StackVolume:
     roi_start_xyz: tuple[int, int, int] | None
 
 
+VOLUME_DTYPES: dict[str, np.dtype] = {
+    "float32": np.dtype(np.float32),
+    "uint8": np.dtype(np.uint8),
+    "uint16": np.dtype(np.uint16),
+}
+
+
 def list_png_paths(input_dir: Path) -> list[Path]:
     pngs = sorted(input_dir.glob("*.png"), key=extract_last_number)
     if not pngs:
@@ -46,29 +53,34 @@ def _grayscale_palette_levels(img: Image.Image, path: Path) -> list[float]:
     return [float(rgb[0]) for rgb in triplets]
 
 
-def decode_png_as_gray_f32(path: Path) -> tuple[np.ndarray, np.dtype]:
+def decode_png_as_gray_native(path: Path) -> tuple[np.ndarray, np.dtype]:
     with Image.open(path) as img:
         if img.mode == "P":
             _grayscale_palette_levels(img, path)
             gray = np.asarray(img.convert("L"), dtype=np.uint8)
-            return gray.astype(np.float32), gray.dtype
+            return gray, gray.dtype
 
         if img.mode == "L":
             gray = np.asarray(img, dtype=np.uint8)
-            return gray.astype(np.float32), gray.dtype
+            return gray, gray.dtype
 
         if img.mode.startswith("I;16"):
             gray = np.asarray(img, dtype=np.uint16)
-            return gray.astype(np.float32), gray.dtype
+            return gray, gray.dtype
 
         if img.mode in ("RGB", "RGBA"):
             rgb = np.asarray(img.convert("RGB"))
             if not (np.array_equal(rgb[..., 0], rgb[..., 1]) and np.array_equal(rgb[..., 1], rgb[..., 2])):
                 raise RuntimeError(f"RGB PNG is not grayscale: {path}")
             gray = rgb[..., 0].astype(np.uint8, copy=False)
-            return gray.astype(np.float32), gray.dtype
+            return gray, gray.dtype
 
     raise RuntimeError(f"Unsupported PNG mode for grayscale decode in file {path}")
+
+
+def decode_png_as_gray_f32(path: Path) -> tuple[np.ndarray, np.dtype]:
+    gray, decoded_dtype = decode_png_as_gray_native(path)
+    return gray.astype(np.float32), decoded_dtype
 
 
 def infer_png_observation_model(path: Path, decoded_dtype: np.dtype) -> ObservationModel:
@@ -126,6 +138,7 @@ def load_png_stack_volume(
     roi_size_xyz: tuple[int, int, int] | None = None,
     roi_start_xyz: tuple[int, int, int] | None = None,
     observation_model_override: ObservationModel | None = None,
+    volume_dtype: str | np.dtype | type = np.float32,
 ) -> StackVolume:
     if not input_dir.exists() or not input_dir.is_dir():
         raise RuntimeError(f"Input directory does not exist or is not a directory: {input_dir}")
@@ -152,13 +165,18 @@ def load_png_stack_volume(
             )
         pngs = pngs[z0 : z0 + roi_z]
 
-    slices: list[np.ndarray] = []
+    output_dtype = np.dtype(volume_dtype)
+    if output_dtype not in VOLUME_DTYPES.values():
+        supported = ", ".join(VOLUME_DTYPES)
+        raise RuntimeError(f"Unsupported PNG stack volume dtype {output_dtype}; supported: {supported}.")
+
+    volume_zyx: np.ndarray | None = None
     ref_shape: tuple[int, int] | None = None
     decoded_dtype: np.dtype | None = None
     observation_model: ObservationModel | None = None
 
     for i, path in enumerate(pngs):
-        gray, current_dtype = decode_png_as_gray_f32(path)
+        gray, current_dtype = decode_png_as_gray_native(path)
         current_model = infer_png_observation_model(path, current_dtype)
         if ref_shape is None:
             ref_shape = (int(gray.shape[0]), int(gray.shape[1]))
@@ -186,13 +204,19 @@ def load_png_stack_volume(
                 )
             gray = gray[y0 : y0 + roi_y, x0 : x0 + roi_x]
 
-        slices.append(gray)
+        if output_dtype == np.dtype(np.uint8) and current_dtype != np.uint8:
+            raise RuntimeError(f"Cannot save {current_dtype} PNG data as uint8 without loss: {path}")
+
+        if volume_zyx is None:
+            volume_zyx = np.empty((len(pngs), gray.shape[0], gray.shape[1]), dtype=output_dtype)
+
+        volume_zyx[i] = gray.astype(output_dtype, copy=False)
 
     assert ref_shape is not None
     assert decoded_dtype is not None
     assert observation_model is not None
+    assert volume_zyx is not None
 
-    volume_zyx = np.stack(slices, axis=0).astype(np.float32, copy=False)
     volume_xyz = np.transpose(volume_zyx, (2, 1, 0))
 
     return StackVolume(

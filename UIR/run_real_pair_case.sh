@@ -18,6 +18,14 @@ roi_size="${ROI_SIZE:-}"
 voxel_spacing_x="${VOXEL_SPACING_X:-1}"
 voxel_spacing_y="${VOXEL_SPACING_Y:-1}"
 voxel_spacing_z="${VOXEL_SPACING_Z:-1}"
+sift_peak_thresh="${SIFT_PEAK_THRESH:-}"
+sift_corner_thresh="${SIFT_CORNER_THRESH:-}"
+sift_nn_thresh="${SIFT_NN_THRESH:-}"
+sift_err_thresh="${SIFT_ERR_THRESH:-}"
+sift_num_iter="${SIFT_NUM_ITER:-}"
+model_consistent_threshold="${MODEL_CONSISTENT_THRESHOLD:-${sift_err_thresh:-5}}"
+intensity_cuboid_radius="${INTENSITY_CUBOID_RADIUS:-5}"
+png_stack_nifti_dtype="${PNG_STACK_NIFTI_DTYPE:-float32}"
 before_stack_dir="${BEFORE_STACK_DIR:-${script_dir}/resources/real3d_pair/before_png_stack}"
 after_stack_dir="${AFTER_STACK_DIR:-${script_dir}/resources/real3d_pair/after_png_stack}"
 
@@ -39,13 +47,16 @@ ensure_stack_dir "${before_stack_dir}" "Before stack directory"
 ensure_stack_dir "${after_stack_dir}" "After stack directory"
 ensure_nifti_install "${nifti_install_dir}"
 
-build_sift3d "${workspace_dir}" "${sift_build_dir}" "${nifti_install_dir}" "${build_jobs}"
+ensure_sift3d_binary "${workspace_dir}" "${sift_build_dir}" "${nifti_install_dir}" "${build_jobs}"
 
 export OMP_NUM_THREADS="${omp_num_threads}"
 export_uir_pythonpath "${python_src_dir}"
 
-pair_tag="${REAL_PAIR_TAG:-$(basename "$(dirname "${before_stack_dir}")")_before_to_after}"
-case_tag="full_volume"
+read -r pair_tag case_tag < <(
+  "${python_bin}" -m uir.cli.run_name real_pair \
+    --before-stack-dir "${before_stack_dir}" \
+    --pair-tag "${REAL_PAIR_TAG:-}"
+)
 
 png_stack_args=(
   "${voxel_spacing_x}"
@@ -55,6 +66,23 @@ png_stack_args=(
 before_png_stack_args=("${png_stack_args[@]}")
 after_png_stack_args=("${png_stack_args[@]}")
 summary_args=()
+reg_sift_args=()
+
+if [[ -n "${sift_peak_thresh}" ]]; then
+  reg_sift_args+=(--peak_thresh "${sift_peak_thresh}")
+fi
+if [[ -n "${sift_corner_thresh}" ]]; then
+  reg_sift_args+=(--corner_thresh "${sift_corner_thresh}")
+fi
+if [[ -n "${sift_nn_thresh}" ]]; then
+  reg_sift_args+=(--nn_thresh "${sift_nn_thresh}")
+fi
+if [[ -n "${sift_err_thresh}" ]]; then
+  reg_sift_args+=(--err_thresh "${sift_err_thresh}")
+fi
+if [[ -n "${sift_num_iter}" ]]; then
+  reg_sift_args+=(--num_iter "${sift_num_iter}")
+fi
 
 if [[ -n "${roi_size}" ]]; then
   if ! [[ "${roi_size}" =~ ^[0-9]+$ ]]; then
@@ -78,6 +106,15 @@ if [[ -n "${roi_size}" ]]; then
   )
 fi
 
+case "${png_stack_nifti_dtype}" in
+  float32|uint8|uint16)
+    ;;
+  *)
+    echo "PNG_STACK_NIFTI_DTYPE must be one of: float32, uint8, uint16; got: ${png_stack_nifti_dtype}" >&2
+    exit 1
+    ;;
+esac
+
 run_dir="${runs_root}/real_pair/${pair_tag}/${case_tag}"
 before_nii="${run_dir}/before.nii"
 after_nii="${run_dir}/after.nii"
@@ -88,22 +125,51 @@ summary_json="${run_dir}/summary.json"
 rm -rf "${run_dir}"
 mkdir -p "${run_dir}"
 
+"${python_bin}" -m uir.experiment.run_config "${run_dir}" \
+  --scenario real_pair \
+  --param "pair_tag=${pair_tag}" \
+  --param "case_tag=${case_tag}" \
+  --param "roi_size=${roi_size}" \
+  --param "png_stack_nifti_dtype=${png_stack_nifti_dtype}" \
+  --param "voxel_spacing_x=${voxel_spacing_x}" \
+  --param "voxel_spacing_y=${voxel_spacing_y}" \
+  --param "voxel_spacing_z=${voxel_spacing_z}" \
+  --param "model_consistent_threshold=${model_consistent_threshold}" \
+  --param "intensity_cuboid_radius=${intensity_cuboid_radius}" \
+  --param "sift_peak_thresh=${sift_peak_thresh}" \
+  --param "sift_corner_thresh=${sift_corner_thresh}" \
+  --param "sift_nn_thresh=${sift_nn_thresh}" \
+  --param "sift_err_thresh=${sift_err_thresh}" \
+  --param "sift_num_iter=${sift_num_iter}" \
+  --input "before_stack_dir=${before_stack_dir}" \
+  --input "after_stack_dir=${after_stack_dir}" >/dev/null
+
 "${python_bin}" -m uir.cli.png_stack_to_nifti \
   "${before_stack_dir}" \
   "${before_nii}" \
-  "${before_png_stack_args[@]}"
+  "${before_png_stack_args[@]}" \
+  --dtype "${png_stack_nifti_dtype}"
 
 "${python_bin}" -m uir.cli.png_stack_to_nifti \
   "${after_stack_dir}" \
   "${after_nii}" \
-  "${after_png_stack_args[@]}"
+  "${after_png_stack_args[@]}" \
+  --dtype "${png_stack_nifti_dtype}"
+
+reg_sift_cmd=(
+  "${python_bin}" -m uir.registration
+  --binary "${sift_build_dir}/bin/regSift3D"
+  --matches "${matches_csv}"
+  --transform "${transform_csv}"
+  --reference "${before_nii}"
+  --moving "${after_nii}"
+)
+if [[ ${#reg_sift_args[@]} -gt 0 ]]; then
+  reg_sift_cmd+=(-- "${reg_sift_args[@]}")
+fi
 
 set +e
-"${sift_build_dir}/bin/regSift3D" \
-  --matches "${matches_csv}" \
-  --transform "${transform_csv}" \
-  "${before_nii}" \
-  "${after_nii}"
+"${reg_sift_cmd[@]}"
 reg_exit_code=$?
 set -e
 
@@ -117,6 +183,8 @@ summary_cmd=(
   --matches-path "${matches_csv}"
   --transform-path "${transform_csv}"
   --reg-exit-code "${reg_exit_code}"
+  --model-consistent-threshold "${model_consistent_threshold}"
+  --intensity-cuboid-radius "${intensity_cuboid_radius}"
 )
 
 if [[ ${#summary_args[@]} -gt 0 ]]; then
@@ -135,6 +203,14 @@ echo "Done."
 echo "Pair tag: ${pair_tag}"
 echo "Case tag: ${case_tag}"
 echo "OMP_NUM_THREADS: ${OMP_NUM_THREADS}"
+echo "PNG stack NIfTI dtype: ${png_stack_nifti_dtype}"
+if [[ ${#reg_sift_args[@]} -gt 0 ]]; then
+  echo "SIFT3D args: ${reg_sift_args[*]}"
+else
+  echo "SIFT3D args: defaults"
+fi
+echo "Model-consistent threshold: ${model_consistent_threshold}"
+echo "Intensity cuboid radius: ${intensity_cuboid_radius}"
 echo "Run dir: ${run_dir}"
 echo "Before stack: ${before_stack_dir}"
 echo "After stack: ${after_stack_dir}"

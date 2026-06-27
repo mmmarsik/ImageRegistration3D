@@ -1,0 +1,91 @@
+{
+  "mode": "real_pair",
+  "registration_succeeded": true,
+  "reg_exit_code": 0,
+  "run_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_corner060/full_volume",
+  "before_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/resources/real3d_pair/before_png_stack",
+  "after_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/resources/real3d_pair/after_png_stack",
+  "before_nifti": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_corner060/full_volume/before.nii",
+  "after_nifti": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_corner060/full_volume/after.nii",
+  "matches_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_corner060/full_volume/matches.csv",
+  "transform_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_corner060/full_volume/transform.csv",
+  "match_count": 861,
+  "before_stack_shape_xyz": [
+    710,
+    333,
+    710
+  ],
+  "after_stack_shape_xyz": [
+    698,
+    333,
+    698
+  ],
+  "before_nifti_shape_xyz": [
+    710,
+    333,
+    710
+  ],
+  "after_nifti_shape_xyz": [
+    698,
+    333,
+    698
+  ],
+  "before_observation_range": [
+    0.0,
+    255.0
+  ],
+  "after_observation_range": [
+    0.0,
+    255.0
+  ],
+  "matched_keypoints_before_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_corner060/full_volume/plots/matched_keypoints_before_png_stack",
+  "matched_keypoints_after_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_corner060/full_volume/plots/matched_keypoints_after_png_stack",
+  "matched_keypoints_cross_radius_px": 3,
+  "matched_keypoints_green": "model_consistent_matches",
+  "matched_keypoints_red": "descriptor_matches_outside_model_threshold",
+  "model_consistent_match_threshold": 5.0,
+  "model_consistent_match_count": 814,
+  "model_outlier_match_count": 47,
+  "model_consistent_match_fraction": 0.9454123112659698,
+  "model_match_residual_l2_p50": 1.2246416145129853,
+  "model_match_residual_l2_p95": 5.213236727842918,
+  "model_match_residual_l2_p99": 10.972964461301729,
+  "match_residual_count": 861,
+  "match_raw_l2_mean": 85.20480742867005,
+  "match_raw_l2_median": 89.97777503361594,
+  "match_raw_l2_max": 568.1672289036037,
+  "match_residual_l2_mean": 2.8600972467692247,
+  "match_residual_l2_median": 1.2246416145129853,
+  "match_residual_l2_rms": 20.26386903358432,
+  "match_residual_l2_p95": 5.213236727842918,
+  "match_residual_l2_max": 490.7778331563627,
+  "match_residual_xyz_mean": [
+    -0.3042245342624817,
+    -0.04515400348433361,
+    0.4026956736352916
+  ],
+  "match_residuals_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_corner060/full_volume/plots/match_residuals.csv",
+  "match_residual_diagnostic_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_corner060/full_volume/plots/match_residual_diagnostic.png",
+  "signed_diff_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_corner060/full_volume/plots/signed_diff_png_stack",
+  "signed_diff_formula": "normalized_before - normalized_registered_after",
+  "signed_diff_intensity_normalization": "median_centered_p1_p99_scale",
+  "signed_diff_intensity_sample_source": "model_consistent_match_cuboids",
+  "signed_diff_intensity_cuboid_radius": 5,
+  "signed_diff_intensity_sample_count_before": 1082950,
+  "signed_diff_intensity_sample_count_after": 1082950,
+  "signed_diff_intensity_model_consistent_match_count": 814,
+  "signed_diff_before_intensity_p1": 59.0,
+  "signed_diff_before_intensity_p99": 243.0,
+  "signed_diff_before_intensity_median": 204.0,
+  "signed_diff_before_intensity_scale": 184.0,
+  "signed_diff_after_intensity_p1": 72.0,
+  "signed_diff_after_intensity_p99": 241.0,
+  "signed_diff_after_intensity_median": 202.0,
+  "signed_diff_after_intensity_scale": 169.0,
+  "signed_diff_colormap": "blue_negative_white_zero_red_positive",
+  "signed_diff_abs_p99": 1.3257009983062744,
+  "signed_diff_display_limit_abs": 1.3257009983062744,
+  "estimated_transform_rows": 3,
+  "estimated_transform_cols": 4,
+  "estimated_linear_det": 0.5496639191690014
+}

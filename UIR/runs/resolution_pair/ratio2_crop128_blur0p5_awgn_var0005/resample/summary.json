@@ -1,0 +1,82 @@
+{
+  "run_kind": "resolution_pair",
+  "source_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/resources/bhi_2_2.32um_voi",
+  "ratio": 2,
+  "high_spacing": 1.0,
+  "low_spacing": 2.0,
+  "source_shape_xyz": [
+    500,
+    500,
+    500
+  ],
+  "low_res_shape_xyz": [
+    250,
+    250,
+    250
+  ],
+  "high_crop_shape_xyz": [
+    128,
+    128,
+    128
+  ],
+  "high_crop_start_xyz": [
+    186,
+    186,
+    186
+  ],
+  "low_res_whole_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop128_blur0p5_awgn_var0005/low_res_whole.nii",
+  "high_res_crop_clean_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop128_blur0p5_awgn_var0005/high_res_crop_clean.nii",
+  "expected_transform_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop128_blur0p5_awgn_var0005/expected_high_crop_to_low_whole_transform.csv",
+  "expected_transform_semantics": "high_res_crop_voxel_to_low_res_whole_voxel",
+  "mode": "resample",
+  "registration_succeeded": true,
+  "reg_exit_code": 0,
+  "run_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop128_blur0p5_awgn_var0005",
+  "mode_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop128_blur0p5_awgn_var0005/resample",
+  "matches_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop128_blur0p5_awgn_var0005/resample/matches.csv",
+  "transform_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop128_blur0p5_awgn_var0005/resample/transform.csv",
+  "match_count": 92,
+  "transform_diff_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop128_blur0p5_awgn_var0005/resample/plots/transform_minus_expected.csv",
+  "matrix_element_errors_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop128_blur0p5_awgn_var0005/resample/plots/matrix_element_errors.csv",
+  "matrix_error_diagnostic_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop128_blur0p5_awgn_var0005/resample/plots/matrix_error_diagnostic.png",
+  "match_residuals_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop128_blur0p5_awgn_var0005/resample/plots/match_residuals.csv",
+  "match_residual_diagnostic_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop128_blur0p5_awgn_var0005/resample/plots/match_residual_diagnostic.png",
+  "linear_rms_error": 0.0008136635941496063,
+  "linear_mean_abs_error": 0.000670222222222227,
+  "linear_max_abs_error": 0.0015060000000000073,
+  "linear_max_abs_error_component": "linear_r0c0",
+  "translation_l2_error_voxels": 0.5302910140790636,
+  "translation_mean_abs_error_voxels": 0.27778699999999884,
+  "translation_max_abs_error_voxels": 0.45561600000000624,
+  "translation_max_abs_error_axis": "tx",
+  "max_abs_transform_element_error": 0.45561600000000624,
+  "max_abs_transform_element_component": "tx",
+  "translation_error_xyz": [
+    -0.45561600000000624,
+    -0.22261399999999298,
+    -0.15513099999999724
+  ],
+  "expected_linear_det": 0.12500000000000003,
+  "estimated_linear_det": 0.1255183468126928,
+  "linear_det_abs_error": 0.000518346812692777,
+  "translation_error_physical_xyz": [
+    -0.9112320000000125,
+    -0.44522799999998597,
+    -0.3102619999999945
+  ],
+  "translation_l2_error_physical": 1.0605820281581273,
+  "match_residual_count": 92,
+  "match_raw_l2_mean": 110.7394453654744,
+  "match_raw_l2_median": 109.70925252673325,
+  "match_raw_l2_max": 254.63797831431194,
+  "match_residual_l2_mean": 7.288390852056563,
+  "match_residual_l2_median": 0.4306123532332805,
+  "match_residual_l2_rms": 33.396399668189076,
+  "match_residual_l2_p95": 1.424333361677619,
+  "match_residual_l2_max": 198.40562580346298,
+  "match_residual_xyz_mean": [
+    -1.471257913043472,
+    -0.12603831521740236,
+    -0.25765643478261024
+  ]
+}

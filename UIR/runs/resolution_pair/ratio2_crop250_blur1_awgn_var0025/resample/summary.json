@@ -1,0 +1,82 @@
+{
+  "run_kind": "resolution_pair",
+  "source_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/resources/bhi_2_2.32um_voi",
+  "ratio": 2,
+  "high_spacing": 1.0,
+  "low_spacing": 2.0,
+  "source_shape_xyz": [
+    500,
+    500,
+    500
+  ],
+  "low_res_shape_xyz": [
+    250,
+    250,
+    250
+  ],
+  "high_crop_shape_xyz": [
+    250,
+    250,
+    250
+  ],
+  "high_crop_start_xyz": [
+    125,
+    125,
+    125
+  ],
+  "low_res_whole_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop250_blur1_awgn_var0025/low_res_whole.nii",
+  "high_res_crop_clean_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop250_blur1_awgn_var0025/high_res_crop_clean.nii",
+  "expected_transform_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop250_blur1_awgn_var0025/expected_high_crop_to_low_whole_transform.csv",
+  "expected_transform_semantics": "high_res_crop_voxel_to_low_res_whole_voxel",
+  "mode": "resample",
+  "registration_succeeded": true,
+  "reg_exit_code": 0,
+  "run_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop250_blur1_awgn_var0025",
+  "mode_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop250_blur1_awgn_var0025/resample",
+  "matches_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop250_blur1_awgn_var0025/resample/matches.csv",
+  "transform_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop250_blur1_awgn_var0025/resample/transform.csv",
+  "match_count": 1223,
+  "transform_diff_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop250_blur1_awgn_var0025/resample/plots/transform_minus_expected.csv",
+  "matrix_element_errors_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop250_blur1_awgn_var0025/resample/plots/matrix_element_errors.csv",
+  "matrix_error_diagnostic_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop250_blur1_awgn_var0025/resample/plots/matrix_error_diagnostic.png",
+  "match_residuals_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop250_blur1_awgn_var0025/resample/plots/match_residuals.csv",
+  "match_residual_diagnostic_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio2_crop250_blur1_awgn_var0025/resample/plots/match_residual_diagnostic.png",
+  "linear_rms_error": 0.00022870359274251663,
+  "linear_mean_abs_error": 0.0001895555555555614,
+  "linear_max_abs_error": 0.00042,
+  "linear_max_abs_error_component": "linear_r1c2",
+  "translation_l2_error_voxels": 0.4934836622645205,
+  "translation_mean_abs_error_voxels": 0.2833486666666687,
+  "translation_max_abs_error_voxels": 0.30561200000000355,
+  "translation_max_abs_error_axis": "tx",
+  "max_abs_transform_element_error": 0.30561200000000355,
+  "max_abs_transform_element_component": "tx",
+  "translation_error_xyz": [
+    -0.30561200000000355,
+    -0.24120700000000284,
+    -0.3032269999999997
+  ],
+  "expected_linear_det": 0.12500000000000003,
+  "estimated_linear_det": 0.12498397151378185,
+  "linear_det_abs_error": 1.6028486218178095e-05,
+  "translation_error_physical_xyz": [
+    -0.6112240000000071,
+    -0.48241400000000567,
+    -0.6064539999999994
+  ],
+  "translation_l2_error_physical": 0.986967324529041,
+  "match_residual_count": 1223,
+  "match_raw_l2_mean": 52.63947570850397,
+  "match_raw_l2_median": 53.69124695888521,
+  "match_raw_l2_max": 121.06196760337245,
+  "match_residual_l2_mean": 0.8024784950964625,
+  "match_residual_l2_median": 0.4357165305207019,
+  "match_residual_l2_rms": 4.4805395155491095,
+  "match_residual_l2_p95": 1.348135281435534,
+  "match_residual_l2_max": 102.56260951383355,
+  "match_residual_xyz_mean": [
+    -0.11985534260016621,
+    0.11881950531480322,
+    0.07960932297628681
+  ]
+}

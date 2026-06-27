@@ -38,38 +38,18 @@ ensure_python_bin "${python_bin}"
 ensure_stack_dir "${source_stack_dir}" "Source stack directory"
 ensure_nifti_install "${nifti_install_dir}"
 
+export_uir_pythonpath "${python_src_dir}"
 read -r degradation case_tag blur_sigma_xy blur_slug < <(
-  ROI_SIZE="${roi_size}" VARIANCE_PADDED="${variance_padded}" BLUR_SIGMA_XY="${blur_sigma_xy_raw}" "${python_bin}" -c '
-import os
-import sys
-
-roi_size = os.environ["ROI_SIZE"]
-variance_padded = os.environ["VARIANCE_PADDED"]
-raw_sigma = os.environ["BLUR_SIGMA_XY"]
-
-try:
-    sigma = float(raw_sigma)
-except ValueError:
-    print(f"Invalid BLUR_SIGMA_XY: {raw_sigma}", file=sys.stderr)
-    raise SystemExit(2)
-
-if sigma < 0.0:
-    print(f"BLUR_SIGMA_XY must be non-negative, got: {raw_sigma}", file=sys.stderr)
-    raise SystemExit(2)
-
-if sigma == 0.0:
-    print("awgn", f"roi{roi_size}_awgn_var{variance_padded}", "0", "0")
-else:
-    slug = f"{sigma:.2f}".rstrip("0").rstrip(".").replace(".", "p")
-    print("blur_awgn", f"roi{roi_size}_blur{slug}_awgn_var{variance_padded}", f"{sigma:.12g}", slug)
-'
+  "${python_bin}" -m uir.cli.run_name variance \
+    --roi-size "${roi_size}" \
+    --variance-padded "${variance_padded}" \
+    --blur-sigma-xy "${blur_sigma_xy_raw}"
 )
 
-build_uir "${script_dir}" "${uir_build_dir}" "${build_jobs}"
-build_sift3d "${workspace_dir}" "${sift_build_dir}" "${nifti_install_dir}" "${build_jobs}"
+ensure_uir_binary "${script_dir}" "${uir_build_dir}" "${build_jobs}"
+ensure_sift3d_binary "${workspace_dir}" "${sift_build_dir}" "${nifti_install_dir}" "${build_jobs}"
 
 export OMP_NUM_THREADS="${omp_num_threads}"
-export_uir_pythonpath "${python_src_dir}"
 
 transform_tag="$("${uir_build_dir}/uir_affine" --transform-tag)"
 transform_root="${runs_root}/${transform_tag}"
@@ -93,6 +73,17 @@ mkdir -p "${transform_root}"
 
 rm -rf "${run_dir}"
 mkdir -p "${run_dir}" "${mpl_config_dir}"
+
+"${python_bin}" -m uir.experiment.run_config "${run_dir}" \
+  --scenario variance \
+  --param "variance=${variance}" \
+  --param "roi_size=${roi_size}" \
+  --param "blur_sigma_xy=${blur_sigma_xy}" \
+  --param "blur_slug=${blur_slug}" \
+  --param "awgn_seed=${awgn_seed}" \
+  --param "degradation=${degradation}" \
+  --param "transform_tag=${transform_tag}" \
+  --input "source_stack_dir=${source_stack_dir}" >/dev/null
 
 "${uir_build_dir}/uir_affine" "${stack_dir}" "${run_dir}"
 
@@ -129,11 +120,15 @@ fi
   --variance "${variance}" \
   --seed "${awgn_seed}"
 
-"${sift_build_dir}/bin/regSift3D" \
+set +e
+"${python_bin}" -m uir.registration \
+  --binary "${sift_build_dir}/bin/regSift3D" \
   --matches "${matches_csv}" \
   --transform "${transform_csv}" \
-  "${volume_a_nii}" \
-  "${volume_b_noisy_nii}"
+  --reference "${volume_a_nii}" \
+  --moving "${volume_b_noisy_nii}"
+reg_exit_code=$?
+set -e
 
 MPLCONFIGDIR="${mpl_config_dir}" "${python_bin}" -m uir.cli.plot_single_case_report \
   "${run_dir}" \
@@ -146,7 +141,13 @@ MPLCONFIGDIR="${mpl_config_dir}" "${python_bin}" -m uir.cli.plot_single_case_rep
   --transform-tag "${transform_tag}" \
   --blur-sigma-xy "${blur_sigma_xy}" \
   --awgn-variance "${variance}" \
-  --awgn-seed "${awgn_seed}"
+  --awgn-seed "${awgn_seed}" \
+  --reg-exit-code "${reg_exit_code}"
+
+if [[ "${reg_exit_code}" -ne 0 ]]; then
+  echo "regSift3D failed with exit code ${reg_exit_code}" >&2
+  exit "${reg_exit_code}"
+fi
 
 echo
 echo "Done."

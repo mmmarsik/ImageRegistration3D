@@ -1,0 +1,82 @@
+{
+  "run_kind": "resolution_pair",
+  "source_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/resources/bhi_2_2.32um_voi",
+  "ratio": 4,
+  "high_spacing": 1.0,
+  "low_spacing": 4.0,
+  "source_shape_xyz": [
+    500,
+    500,
+    500
+  ],
+  "low_res_shape_xyz": [
+    125,
+    125,
+    125
+  ],
+  "high_crop_shape_xyz": [
+    250,
+    250,
+    250
+  ],
+  "high_crop_start_xyz": [
+    125,
+    125,
+    125
+  ],
+  "low_res_whole_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio4_crop250_blur1_awgn_var0025/low_res_whole.nii",
+  "high_res_crop_clean_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio4_crop250_blur1_awgn_var0025/high_res_crop_clean.nii",
+  "expected_transform_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio4_crop250_blur1_awgn_var0025/expected_high_crop_to_low_whole_transform.csv",
+  "expected_transform_semantics": "high_res_crop_voxel_to_low_res_whole_voxel",
+  "mode": "resample",
+  "registration_succeeded": true,
+  "reg_exit_code": 0,
+  "run_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio4_crop250_blur1_awgn_var0025",
+  "mode_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio4_crop250_blur1_awgn_var0025/resample",
+  "matches_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio4_crop250_blur1_awgn_var0025/resample/matches.csv",
+  "transform_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio4_crop250_blur1_awgn_var0025/resample/transform.csv",
+  "match_count": 287,
+  "transform_diff_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio4_crop250_blur1_awgn_var0025/resample/plots/transform_minus_expected.csv",
+  "matrix_element_errors_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio4_crop250_blur1_awgn_var0025/resample/plots/matrix_element_errors.csv",
+  "matrix_error_diagnostic_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio4_crop250_blur1_awgn_var0025/resample/plots/matrix_error_diagnostic.png",
+  "match_residuals_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio4_crop250_blur1_awgn_var0025/resample/plots/match_residuals.csv",
+  "match_residual_diagnostic_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio4_crop250_blur1_awgn_var0025/resample/plots/match_residual_diagnostic.png",
+  "linear_rms_error": 0.0003720586871270019,
+  "linear_mean_abs_error": 0.0003438888888888898,
+  "linear_max_abs_error": 0.0005180000000000184,
+  "linear_max_abs_error_component": "linear_r0c0",
+  "translation_l2_error_voxels": 0.5333637407717187,
+  "translation_mean_abs_error_voxels": 0.30747200000000063,
+  "translation_max_abs_error_voxels": 0.32651500000000055,
+  "translation_max_abs_error_axis": "tx",
+  "max_abs_transform_element_error": 0.32651500000000055,
+  "max_abs_transform_element_component": "tx",
+  "translation_error_xyz": [
+    -0.32651500000000055,
+    -0.2853840000000005,
+    -0.3105170000000008
+  ],
+  "expected_linear_det": 0.015625000000000007,
+  "estimated_linear_det": 0.015665216919142955,
+  "linear_det_abs_error": 4.021691914294842e-05,
+  "translation_error_physical_xyz": [
+    -1.3060600000000022,
+    -1.141536000000002,
+    -1.2420680000000033
+  ],
+  "translation_l2_error_physical": 2.1334549630868747,
+  "match_residual_count": 287,
+  "match_raw_l2_mean": 123.74381142070504,
+  "match_raw_l2_median": 121.2311841070605,
+  "match_raw_l2_max": 262.76224995230956,
+  "match_residual_l2_mean": 1.7080972782125485,
+  "match_residual_l2_median": 0.22000923123133767,
+  "match_residual_l2_rms": 10.155155630298802,
+  "match_residual_l2_p95": 1.3420171973088633,
+  "match_residual_l2_max": 100.80959865127154,
+  "match_residual_xyz_mean": [
+    -0.876536644599305,
+    -0.44322662020905923,
+    -0.12377332055749203
+  ]
+}

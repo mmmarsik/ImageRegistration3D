@@ -22,6 +22,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--roi-size", nargs=3, type=int, metavar=("X", "Y", "Z"))
     parser.add_argument("--before-roi-start", nargs=3, type=int, metavar=("X0", "Y0", "Z0"))
     parser.add_argument("--after-roi-start", nargs=3, type=int, metavar=("X0", "Y0", "Z0"))
+    parser.add_argument(
+        "--model-consistent-threshold",
+        type=float,
+        default=5.0,
+        help="Residual threshold for green/model-consistent matches.",
+    )
+    parser.add_argument(
+        "--intensity-cuboid-radius",
+        type=int,
+        default=5,
+        help="Radius of cuboids around model-consistent matches for diff intensity normalization.",
+    )
     return parser.parse_args()
 
 
@@ -39,6 +51,8 @@ def main() -> int:
         roi_size_xyz=tuple(args.roi_size) if args.roi_size is not None else None,
         before_roi_start_xyz=tuple(args.before_roi_start) if args.before_roi_start is not None else None,
         after_roi_start_xyz=tuple(args.after_roi_start) if args.after_roi_start is not None else None,
+        model_consistent_threshold=args.model_consistent_threshold,
+        intensity_cuboid_radius=args.intensity_cuboid_radius,
     )
 
     summary_path = args.run_dir / "summary.json"
@@ -49,6 +63,11 @@ def main() -> int:
     print(f"Match count: {summary['match_count']}")
     if "estimated_linear_det" in summary:
         print(f"Estimated linear det: {summary['estimated_linear_det']:.6f}")
+    if "matched_keypoints_before_stack_dir" in summary:
+        print(f"Matched keypoints before stack: {summary['matched_keypoints_before_stack_dir']}")
+        print(f"Matched keypoints after stack: {summary['matched_keypoints_after_stack_dir']}")
+    if "signed_diff_stack_dir" in summary:
+        print(f"Signed diff stack: {summary['signed_diff_stack_dir']}")
     print(f"Summary: {summary_path}")
     return 0
 

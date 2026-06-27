@@ -13,6 +13,7 @@ from uir.reporting.aggregate_plots import (
     plot_noise_accuracy,
     plot_noise_sweep,
     plot_reliability_curve,
+    plot_scale_sweep,
 )
 
 
@@ -33,16 +34,18 @@ def main() -> int:
     heatmap_plot = out_dir / "synthetic_error_heatmap.png"
     reliability_plot = out_dir / "synthetic_reliability_curve.png"
     noise_accuracy_plot = out_dir / "synthetic_noise_accuracy.png"
+    scale_sweep_plot = out_dir / "synthetic_scale_sweep.png"
 
     plot_error_heatmap(rows, heatmap_plot)
     plot_reliability_curve(rows, reliability_plot)
     plot_noise_accuracy(rows, noise_accuracy_plot)
+    plot_scale_sweep(rows, scale_sweep_plot)
 
     roi_sizes = sorted({int(r["roi_size"]) for r in rows})
     sweep_metrics = [
-        ("translation_l2_error_voxels", "Translation L2 error (voxels)", "translation_l2"),
-        ("linear_rms_error", "Linear RMS error", "linear_rms"),
-        ("max_abs_transform_element_error", "Max abs transform element error", "max_abs"),
+        ("translation_l2_error_voxels", "L2-ошибка смещения, воксели", "translation_l2"),
+        ("linear_rms_error", "RMS-ошибка линейной части", "linear_rms"),
+        ("max_abs_transform_element_error", "Максимальная абсолютная ошибка элемента матрицы", "max_abs"),
     ]
     for roi_size in roi_sizes:
         for metric, ylabel, metric_slug in sweep_metrics:
@@ -57,6 +60,7 @@ def main() -> int:
     print(f"Heatmap: {heatmap_plot}")
     print(f"Reliability: {reliability_plot}")
     print(f"Noise accuracy: {noise_accuracy_plot}")
+    print(f"Scale sweep: {scale_sweep_plot}")
     return 0
 
 

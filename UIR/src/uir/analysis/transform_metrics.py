@@ -6,6 +6,8 @@ import csv
 
 import numpy as np
 
+from uir.transforms.matrix import as_homogeneous_4x4 as _as_homogeneous_4x4
+
 
 def infer_requested_variance(noisy_path: Path) -> float | None:
     match = re.search(r"_var_(\d+)", noisy_path.name)
@@ -48,16 +50,6 @@ def read_match_points(matches_path: Path) -> tuple[np.ndarray, np.ndarray]:
 
     matches = np.asarray(rows, dtype=np.float64)
     return matches[:, :3], matches[:, 3:]
-
-
-def _as_homogeneous_4x4(mat: np.ndarray) -> np.ndarray:
-    if mat.shape == (4, 4):
-        return mat.astype(np.float64, copy=False)
-    if mat.shape == (3, 4):
-        out = np.eye(4, dtype=np.float64)
-        out[:3, :] = mat
-        return out
-    raise RuntimeError(f"Expected 3x4 or 4x4 transform, got shape {mat.shape}")
 
 
 def apply_transform_to_points(transform: np.ndarray, points_xyz: np.ndarray) -> np.ndarray:

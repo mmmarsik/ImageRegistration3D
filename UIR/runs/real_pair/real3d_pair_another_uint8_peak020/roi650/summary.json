@@ -1,0 +1,109 @@
+{
+  "mode": "real_pair",
+  "registration_succeeded": true,
+  "reg_exit_code": 0,
+  "run_dir": "UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi650",
+  "before_stack_dir": "UIR/resources/real3d_pair_another/before_real_new_var",
+  "after_stack_dir": "UIR/resources/real3d_pair_another/after_real_new_var",
+  "before_nifti": "UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi650/before.nii",
+  "after_nifti": "UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi650/after.nii",
+  "matches_path": "UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi650/matches.csv",
+  "transform_path": "UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi650/transform.csv",
+  "match_count": 3177,
+  "before_stack_shape_xyz": [
+    859,
+    856,
+    1161
+  ],
+  "after_stack_shape_xyz": [
+    1031,
+    1035,
+    1430
+  ],
+  "before_nifti_shape_xyz": [
+    650,
+    650,
+    650
+  ],
+  "after_nifti_shape_xyz": [
+    650,
+    650,
+    650
+  ],
+  "before_observation_range": [
+    0.0,
+    255.0
+  ],
+  "after_observation_range": [
+    0.0,
+    255.0
+  ],
+  "matched_keypoints_before_stack_dir": "UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi650/plots/matched_keypoints_before_png_stack",
+  "matched_keypoints_after_stack_dir": "UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi650/plots/matched_keypoints_after_png_stack",
+  "matched_keypoints_cross_radius_px": 3,
+  "matched_keypoints_green": "model_consistent_matches",
+  "matched_keypoints_outliers_rendered": false,
+  "model_consistent_match_threshold": 5.0,
+  "model_consistent_match_count": 3162,
+  "model_outlier_match_count": 15,
+  "model_consistent_match_fraction": 0.9952785646836638,
+  "model_match_residual_l2_p50": 0.8380629754720139,
+  "model_match_residual_l2_p95": 2.5943856437008788,
+  "model_match_residual_l2_p99": 4.249840485274037,
+  "match_residual_count": 3177,
+  "match_raw_l2_mean": 87.52624691701115,
+  "match_raw_l2_median": 89.88882021697692,
+  "match_raw_l2_max": 157.3117923106847,
+  "match_residual_l2_mean": 1.0533155363146909,
+  "match_residual_l2_median": 0.8380629754720139,
+  "match_residual_l2_rms": 1.3551164331877779,
+  "match_residual_l2_p95": 2.5943856437008788,
+  "match_residual_l2_max": 11.01074600521968,
+  "match_residual_xyz_mean": [
+    0.007274109537310148,
+    0.008636990871903838,
+    0.004215756059170268
+  ],
+  "match_residuals_path": "UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi650/plots/match_residuals.csv",
+  "match_residual_diagnostic_path": "UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi650/plots/match_residual_diagnostic.png",
+  "signed_diff_stack_dir": "UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi650/plots/signed_diff_png_stack",
+  "signed_diff_formula": "normalized_before - normalized_registered_after",
+  "signed_diff_out_of_bounds_handling": "after_out_of_bounds_pixels_set_to_neutral_zero",
+  "signed_diff_intensity_normalization": "clipped_p1_p99_median_centered",
+  "signed_diff_intensity_sample_source": "model_consistent_match_cuboids",
+  "signed_diff_intensity_cuboid_radius": 5,
+  "signed_diff_intensity_sample_count_before": 4208259,
+  "signed_diff_intensity_sample_count_after": 4208380,
+  "signed_diff_intensity_model_consistent_match_count": 3162,
+  "signed_diff_before_intensity_p1": 55.0,
+  "signed_diff_before_intensity_p99": 229.0,
+  "signed_diff_before_intensity_median": 178.0,
+  "signed_diff_before_intensity_scale": 174.0,
+  "signed_diff_before_intensity_median_unit": 0.7068965517241379,
+  "signed_diff_after_intensity_p1": 66.0,
+  "signed_diff_after_intensity_p99": 224.0,
+  "signed_diff_after_intensity_median": 166.0,
+  "signed_diff_after_intensity_scale": 158.0,
+  "signed_diff_after_intensity_median_unit": 0.6329113924050633,
+  "signed_diff_colormap": "blue_negative_white_zero_red_positive",
+  "signed_diff_abs_p99": 0.6271642446517944,
+  "signed_diff_display_limit_abs": 0.6271642446517944,
+  "estimated_transform_rows": 3,
+  "estimated_transform_cols": 4,
+  "estimated_linear_det": 0.5503924210277272,
+  "roi_size_xyz": [
+    650,
+    650,
+    650
+  ],
+  "before_roi_start_xyz": [
+    104,
+    103,
+    255
+  ],
+  "after_roi_start_xyz": [
+    190,
+    192,
+    390
+  ]
+}

@@ -55,7 +55,42 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--blur-sigma-xy", type=float, default=0.0, help="Gaussian blur sigma in XY slice units.")
     parser.add_argument("--awgn-variance", type=float, help="AWGN variance used for the run.")
     parser.add_argument("--awgn-seed", type=int, default=42, help="AWGN random seed used for the run.")
+    parser.add_argument("--reg-exit-code", type=int, default=0, help="Exit code returned by regSift3D.")
     return parser.parse_args()
+
+
+def _empty_error_stats() -> dict[str, object]:
+    return {
+        "linear_rms_error": None,
+        "linear_mean_abs_error": None,
+        "linear_max_abs_error": None,
+        "linear_max_abs_error_component": None,
+        "translation_l2_error_voxels": None,
+        "translation_mean_abs_error_voxels": None,
+        "translation_max_abs_error_voxels": None,
+        "translation_max_abs_error_axis": None,
+        "max_abs_transform_element_error": None,
+        "max_abs_transform_element_component": None,
+        "translation_error_xyz": None,
+        "expected_linear_det": None,
+        "estimated_linear_det": None,
+        "linear_det_abs_error": None,
+    }
+
+
+def _empty_residual_stats() -> dict[str, object]:
+    return {
+        "match_residual_count": 0,
+        "match_raw_l2_mean": None,
+        "match_raw_l2_median": None,
+        "match_raw_l2_max": None,
+        "match_residual_l2_mean": None,
+        "match_residual_l2_median": None,
+        "match_residual_l2_rms": None,
+        "match_residual_l2_p95": None,
+        "match_residual_l2_max": None,
+        "match_residual_xyz_mean": None,
+    }
 
 
 def main() -> int:
@@ -68,9 +103,9 @@ def main() -> int:
 
     expected_full_inv = read_transform_csv(run_dir / "T_full_inv_4x4.csv")
     expected_roi = roi_expected_transform(expected_full_inv, full_shape_xyz, roi_size_xyz)
-    estimated = read_transform_csv(run_dir / "transform.csv")
     noisy_path = args.noisy_path or infer_noisy_path(run_dir, roi_size=roi_size_xyz[0])
     matches_path = args.matches_path or (run_dir / "matches.csv")
+    transform_path = run_dir / "transform.csv"
     noise_reference_path = args.noise_reference_path or (run_dir / f"volume_B_roi{roi_size_xyz[0]}_clean.nii")
     requested_variance = args.awgn_variance
     if requested_variance is None:
@@ -92,14 +127,20 @@ def main() -> int:
 
     plots_dir.mkdir(parents=True, exist_ok=True)
     write_transform_csv(expected_roi_path, expected_roi)
-    write_transform_csv(diff_path, estimated - expected_roi)
-    write_matrix_element_errors_csv(element_errors_path, expected_roi, estimated)
-    write_match_residuals_csv(match_residuals_path, matches_path, estimated)
+    registration_succeeded = args.reg_exit_code == 0 and transform_path.exists()
+    if registration_succeeded:
+        estimated = read_transform_csv(transform_path)
+        write_transform_csv(diff_path, estimated - expected_roi)
+        write_matrix_element_errors_csv(element_errors_path, expected_roi, estimated)
+        write_match_residuals_csv(match_residuals_path, matches_path, estimated)
 
-    plot_matrix_error_diagnostic(expected_roi, estimated, diagnostic_path)
-    plot_match_residual_diagnostic(matches_path, estimated, match_residual_diagnostic_path)
-    error_stats = matrix_error_stats(expected_roi, estimated)
-    residual_stats = match_residual_stats(matches_path, estimated)
+        plot_matrix_error_diagnostic(expected_roi, estimated, diagnostic_path)
+        plot_match_residual_diagnostic(matches_path, estimated, match_residual_diagnostic_path)
+        error_stats = matrix_error_stats(expected_roi, estimated)
+        residual_stats = match_residual_stats(matches_path, estimated)
+    else:
+        error_stats = _empty_error_stats()
+        residual_stats = _empty_residual_stats()
     noise_keys = [
         "noise_mean",
         "noise_std",
@@ -136,6 +177,8 @@ def main() -> int:
 
     summary = {
         "run_kind": "synthetic",
+        "registration_succeeded": registration_succeeded,
+        "reg_exit_code": int(args.reg_exit_code),
         "degradation": degradation,
         "transform_tag": transform_tag,
         "run_dir": str(run_dir),
@@ -143,7 +186,7 @@ def main() -> int:
         "blur_sigma_xy": float(args.blur_sigma_xy),
         "awgn_seed": int(args.awgn_seed),
         "expected_transform_path": str(expected_roi_path),
-        "estimated_transform_path": str(run_dir / "transform.csv"),
+        "estimated_transform_path": str(transform_path),
         "transform_diff_path": str(diff_path),
         "matrix_element_errors_path": str(element_errors_path),
         "matrix_error_diagnostic_path": str(diagnostic_path),
@@ -167,21 +210,24 @@ def main() -> int:
     summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
     print(f"Plots dir: {plots_dir}")
+    print(f"Registration succeeded: {registration_succeeded}")
     print(f"Expected ROI transform: {expected_roi_path}")
     print(f"Noisy ROI NIfTI: {noisy_path}")
     print(f"Matches CSV: {matches_path}")
     print(f"Match count: {match_count}")
-    print(f"Transform diff CSV: {diff_path}")
-    print(f"Matrix element errors: {element_errors_path}")
-    print(f"Matrix error diagnostic: {diagnostic_path}")
-    print(f"Match residuals CSV: {match_residuals_path}")
-    print(f"Match residual diagnostic: {match_residual_diagnostic_path}")
+    if registration_succeeded:
+        print(f"Transform diff CSV: {diff_path}")
+        print(f"Matrix element errors: {element_errors_path}")
+        print(f"Matrix error diagnostic: {diagnostic_path}")
+        print(f"Match residuals CSV: {match_residuals_path}")
+        print(f"Match residual diagnostic: {match_residual_diagnostic_path}")
     print(f"Noise effect: {plots_dir / 'noise_effect.png'}")
-    print(f"Translation error XYZ: {error_stats['translation_error_xyz']}")
-    print(f"Linear RMS error: {error_stats['linear_rms_error']:.6f}")
-    print(f"Translation L2 error: {error_stats['translation_l2_error_voxels']:.6f} voxels")
-    print(f"Match residual mean: {residual_stats['match_residual_l2_mean']:.6f} voxels")
-    print(f"Match residual p95: {residual_stats['match_residual_l2_p95']:.6f} voxels")
+    if registration_succeeded:
+        print(f"Translation error XYZ: {error_stats['translation_error_xyz']}")
+        print(f"Linear RMS error: {error_stats['linear_rms_error']:.6f}")
+        print(f"Translation L2 error: {error_stats['translation_l2_error_voxels']:.6f} voxels")
+        print(f"Match residual mean: {residual_stats['match_residual_l2_mean']:.6f} voxels")
+        print(f"Match residual p95: {residual_stats['match_residual_l2_p95']:.6f} voxels")
     if requested_variance is not None:
         print(f"Requested variance: {requested_variance:.0f}")
         print(f"Observed noise std: {noise_stats['noise_std']:.6f}")

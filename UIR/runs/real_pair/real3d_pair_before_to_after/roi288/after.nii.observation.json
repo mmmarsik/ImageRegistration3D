@@ -1,0 +1,6 @@
+{
+  "kind": "uir_observation_model",
+  "version": 1,
+  "min_value": 0.0,
+  "max_value": 255.0
+}

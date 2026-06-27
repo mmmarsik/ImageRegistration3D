@@ -3,8 +3,10 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from uir.io.nifti_volume import make_affine, save_nifti_float32
-from uir.io.png_stack import load_png_stack_volume
+import numpy as np
+
+from uir.io.nifti_volume import make_affine, save_nifti
+from uir.io.png_stack import VOLUME_DTYPES, load_png_stack_volume
 from uir.observation.model import ObservationModel, read_observation_model
 
 
@@ -38,6 +40,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--observation-min", type=float, help="Override observation model minimum.")
     parser.add_argument("--observation-max", type=float, help="Override observation model maximum.")
+    parser.add_argument(
+        "--dtype",
+        choices=sorted(VOLUME_DTYPES),
+        default="float32",
+        help="NIfTI voxel dtype to write. Use uint8 for native 8-bit real stacks to reduce file and read memory.",
+    )
     return parser.parse_args()
 
 
@@ -66,15 +74,16 @@ def main() -> int:
         roi_size_xyz=tuple(args.roi_size) if args.roi_size is not None else None,
         roi_start_xyz=tuple(args.roi_start) if args.roi_start is not None else None,
         observation_model_override=observation_model_override,
+        volume_dtype=VOLUME_DTYPES[args.dtype],
     )
     affine = make_affine(args.sx, args.sy, args.sz)
-    save_nifti_float32(output_path, stack.volume_xyz, affine, observation_model=stack.observation_model)
+    save_nifti(output_path, stack.volume_xyz, affine, observation_model=stack.observation_model, dtype=VOLUME_DTYPES[args.dtype])
 
     print(f"Saved: {output_path}")
     print(f"Number of slices: {stack.volume_xyz.shape[2]}")
     print(f"Input slice shape (Y, X): {stack.input_shape_yx}")
     print(f"Saved volume shape (X, Y, Z): {stack.volume_xyz.shape}")
-    print("dtype: float32")
+    print(f"dtype: {np.dtype(VOLUME_DTYPES[args.dtype]).name}")
     print(f"spacing: ({args.sx}, {args.sy}, {args.sz})")
     print(f"Observation range: [{stack.observation_model.min_value:.1f}, {stack.observation_model.max_value:.1f}]")
     print(f"Decoded PNG dtype: {stack.decoded_dtype}")

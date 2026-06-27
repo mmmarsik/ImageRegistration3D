@@ -1,0 +1,108 @@
+{
+  "mode": "real_pair",
+  "registration_succeeded": true,
+  "reg_exit_code": 0,
+  "run_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi501",
+  "before_stack_dir": "UIR/resources/real3d_pair_another/before_real_new_var",
+  "after_stack_dir": "UIR/resources/real3d_pair_another/after_real_new_var",
+  "before_nifti": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi501/before.nii",
+  "after_nifti": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi501/after.nii",
+  "matches_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi501/matches.csv",
+  "transform_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi501/transform.csv",
+  "match_count": 1555,
+  "before_stack_shape_xyz": [
+    859,
+    856,
+    1161
+  ],
+  "after_stack_shape_xyz": [
+    1031,
+    1035,
+    1430
+  ],
+  "before_nifti_shape_xyz": [
+    501,
+    501,
+    501
+  ],
+  "after_nifti_shape_xyz": [
+    501,
+    501,
+    501
+  ],
+  "before_observation_range": [
+    0.0,
+    255.0
+  ],
+  "after_observation_range": [
+    0.0,
+    255.0
+  ],
+  "matched_keypoints_before_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi501/plots/matched_keypoints_before_png_stack",
+  "matched_keypoints_after_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi501/plots/matched_keypoints_after_png_stack",
+  "matched_keypoints_cross_radius_px": 3,
+  "matched_keypoints_green": "model_consistent_matches",
+  "matched_keypoints_outliers_rendered": false,
+  "model_consistent_match_threshold": 5.0,
+  "model_consistent_match_count": 1548,
+  "model_outlier_match_count": 7,
+  "model_consistent_match_fraction": 0.9954983922829582,
+  "model_match_residual_l2_p50": 0.8360559396631713,
+  "model_match_residual_l2_p95": 2.3448177756111828,
+  "model_match_residual_l2_p99": 3.920757956997353,
+  "match_residual_count": 1555,
+  "match_raw_l2_mean": 65.89315754558615,
+  "match_raw_l2_median": 67.52777206453653,
+  "match_raw_l2_max": 120.50311199301038,
+  "match_residual_l2_mean": 1.0325562904866532,
+  "match_residual_l2_median": 0.8360559396631713,
+  "match_residual_l2_rms": 1.3263087462316352,
+  "match_residual_l2_p95": 2.3448177756111828,
+  "match_residual_l2_max": 10.292813695273688,
+  "match_residual_xyz_mean": [
+    0.0023393768488792284,
+    0.0023869427652750594,
+    0.01349151125403387
+  ],
+  "match_residuals_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi501/plots/match_residuals.csv",
+  "match_residual_diagnostic_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi501/plots/match_residual_diagnostic.png",
+  "signed_diff_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/real_pair/real3d_pair_another_uint8_peak020/roi501/plots/signed_diff_png_stack",
+  "signed_diff_formula": "normalized_before - normalized_registered_after",
+  "signed_diff_intensity_normalization": "clipped_p1_p99_median_centered",
+  "signed_diff_intensity_sample_source": "model_consistent_match_cuboids",
+  "signed_diff_intensity_cuboid_radius": 5,
+  "signed_diff_intensity_sample_count_before": 2059420,
+  "signed_diff_intensity_sample_count_after": 2059904,
+  "signed_diff_intensity_model_consistent_match_count": 1548,
+  "signed_diff_before_intensity_p1": 54.0,
+  "signed_diff_before_intensity_p99": 228.0,
+  "signed_diff_before_intensity_median": 178.0,
+  "signed_diff_before_intensity_scale": 174.0,
+  "signed_diff_before_intensity_median_unit": 0.7126436781609196,
+  "signed_diff_after_intensity_p1": 66.0,
+  "signed_diff_after_intensity_p99": 221.0,
+  "signed_diff_after_intensity_median": 167.0,
+  "signed_diff_after_intensity_scale": 155.0,
+  "signed_diff_after_intensity_median_unit": 0.6516129032258065,
+  "signed_diff_colormap": "blue_negative_white_zero_red_positive",
+  "signed_diff_abs_p99": 0.9332220554351807,
+  "signed_diff_display_limit_abs": 0.9332220554351807,
+  "estimated_transform_rows": 3,
+  "estimated_transform_cols": 4,
+  "estimated_linear_det": 0.5504156058280343,
+  "roi_size_xyz": [
+    501,
+    501,
+    501
+  ],
+  "before_roi_start_xyz": [
+    179,
+    177,
+    330
+  ],
+  "after_roi_start_xyz": [
+    265,
+    267,
+    464
+  ]
+}

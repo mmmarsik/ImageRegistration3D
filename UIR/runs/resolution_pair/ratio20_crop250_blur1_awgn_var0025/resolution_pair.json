@@ -1,0 +1,31 @@
+{
+  "run_kind": "resolution_pair",
+  "source_stack_dir": "/Users/mmarss/study/science/ImageRegistration3D/UIR/resources/bhi_2_2.32um_voi",
+  "ratio": 20,
+  "high_spacing": 1.0,
+  "low_spacing": 20.0,
+  "source_shape_xyz": [
+    500,
+    500,
+    500
+  ],
+  "low_res_shape_xyz": [
+    25,
+    25,
+    25
+  ],
+  "high_crop_shape_xyz": [
+    250,
+    250,
+    250
+  ],
+  "high_crop_start_xyz": [
+    125,
+    125,
+    125
+  ],
+  "low_res_whole_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio20_crop250_blur1_awgn_var0025/low_res_whole.nii",
+  "high_res_crop_clean_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio20_crop250_blur1_awgn_var0025/high_res_crop_clean.nii",
+  "expected_transform_path": "/Users/mmarss/study/science/ImageRegistration3D/UIR/runs/resolution_pair/ratio20_crop250_blur1_awgn_var0025/expected_high_crop_to_low_whole_transform.csv",
+  "expected_transform_semantics": "high_res_crop_voxel_to_low_res_whole_voxel"
+}

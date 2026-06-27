@@ -156,3 +156,36 @@ build_uir() {
   cmake -S "${script_dir}" -B "${uir_build_dir}" -DCMAKE_BUILD_TYPE=Release
   cmake --build "${uir_build_dir}" -j "${build_jobs}"
 }
+
+# Build uir_affine only if the binary is missing (or FORCE_REBUILD=1). This
+# decouples the build from each run: a sweep that already has the binary will
+# not reconfigure/rebuild on every point. The underlying build_uir is unchanged.
+ensure_uir_binary() {
+  local script_dir="$1"
+  local uir_build_dir="$2"
+  local build_jobs="$3"
+  local binary="${uir_build_dir}/uir_affine"
+
+  if [[ "${FORCE_REBUILD:-0}" != "1" ]] && [[ -x "${binary}" ]]; then
+    echo "uir_affine already built: ${binary} (set FORCE_REBUILD=1 to rebuild)"
+    return 0
+  fi
+  build_uir "${script_dir}" "${uir_build_dir}" "${build_jobs}"
+}
+
+# Build regSift3D only if the binary is missing (or FORCE_REBUILD=1). Avoids the
+# per-run reconfigure that can race the OpenMP `rm -rf` fallback when synthetic
+# and real scripts share SIFT3D/build. The underlying build_sift3d is unchanged.
+ensure_sift3d_binary() {
+  local workspace_dir="$1"
+  local sift_build_dir="$2"
+  local nifti_install_dir="$3"
+  local build_jobs="$4"
+  local binary="${sift_build_dir}/bin/regSift3D"
+
+  if [[ "${FORCE_REBUILD:-0}" != "1" ]] && [[ -x "${binary}" ]]; then
+    echo "regSift3D already built: ${binary} (set FORCE_REBUILD=1 to rebuild)"
+    return 0
+  fi
+  build_sift3d "${workspace_dir}" "${sift_build_dir}" "${nifti_install_dir}" "${build_jobs}"
+}
