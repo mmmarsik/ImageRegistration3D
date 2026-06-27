@@ -13,6 +13,7 @@ CMakeUserPresets.json
 # === Build artifacts (генерируются, не код) ===
 build/
 UIR/build/
+UIR/build_worker_*/
 SIFT3D/build/
 nifti_clib/build-local/
 nifti_clib/install/

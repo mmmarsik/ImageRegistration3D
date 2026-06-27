@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/Users/mmarss/study/science/ImageRegistration3D/UIR/build_worker_b",
-  "command": "/usr/bin/c++ -DUIR_PROJECT_DIR=\\\"/Users/mmarss/study/science/ImageRegistration3D/UIR\\\" -isystem /opt/homebrew/Cellar/opencv/4.13.0_6/include/opencv4 -O3 -DNDEBUG -std=c++17 -o CMakeFiles/uir_affine.dir/src/main.cpp.o -c /Users/mmarss/study/science/ImageRegistration3D/UIR/src/main.cpp",
-  "file": "/Users/mmarss/study/science/ImageRegistration3D/UIR/src/main.cpp",
-  "output": "CMakeFiles/uir_affine.dir/src/main.cpp.o"
-}
-]
