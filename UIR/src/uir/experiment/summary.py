@@ -1,19 +1,3 @@
-"""Run summary contract: ``RunSummary`` TypedDict + ``RunPaths`` + loader.
-
-This module names the shape of the per-run ``summary.json`` files that the
-pipeline already writes and reads. It is descriptive, not enforced: nothing
-here changes what writers emit or what readers consume. Fields below were
-derived from real summaries under ``UIR/runs/`` covering all three run kinds:
-
-- synthetic        (``cli/plot_single_case_report.py`` -> ``plots/summary.json``)
-- real_pair        (``cli/summarize_real_pair_case.py`` -> ``summary.json``)
-- resolution_pair  (``analysis/resolution_pair.py`` + resample -> ``summary.json``)
-
-Because the three kinds share a file name but differ in keys, ``RunSummary``
-is a single ``total=False`` TypedDict (every key optional) that is the union
-of the keys observed across the three kinds. This mirrors how the readers
-already treat the file: a flat ``dict[str, object]`` validated key-by-key.
-"""
 
 from __future__ import annotations
 
@@ -26,20 +10,6 @@ from typing import TypedDict
 # match_residual_stats keys, kept as a stable schema (see canonical decision
 # in the module docstring section "Open question" below).
 class MatchResidualStats(TypedDict, total=False):
-    """Keys returned by ``analysis/transform_metrics.py:match_residual_stats``.
-
-    Open question (resolved here, documentation only): the function's
-    empty-input branch (``transform_metrics.py``) omits ``match_raw_l2_median``
-    and ``match_raw_l2_max`` that the populated branch includes. The *canonical*
-    schema chosen for this contract is the **full populated key set**, with
-    ``None`` standing in for the empty case. This TypedDict therefore lists all
-    keys as optional (``total=False``) so it accepts both the historical empty
-    payload (which lacks the two raw-median/max keys) and the populated payload.
-    No runtime code is changed; the function still emits its existing two
-    branches. If a future task unifies the branches, padding the empty branch
-    with ``match_raw_l2_median``/``match_raw_l2_max`` set to ``None`` makes the
-    on-disk shape match this canonical schema without breaking old summaries.
-    """
 
     match_residual_count: int
     match_raw_l2_mean: float | None
@@ -54,12 +24,6 @@ class MatchResidualStats(TypedDict, total=False):
 
 
 class RunSummary(TypedDict, total=False):
-    """Union wire format of every per-run ``summary.json``.
-
-    All keys are optional (``total=False``): each concrete run kind populates a
-    subset, and the lenient loader tolerates any missing key. Keys are grouped
-    below by origin; values match what the writers emit verbatim.
-    """
 
     # --- discriminators (which kind of run this is) ---
     run_kind: str            # "synthetic" | "resolution_pair" (absent for real_pair)
@@ -165,12 +129,6 @@ class RunSummary(TypedDict, total=False):
 
 @dataclass(frozen=True)
 class RunPaths:
-    """Fixed file layout of a single run directory.
-
-    Mirrors the repeated ``run_dir / "plots" / ...`` construction across the
-    pipeline (see ``docs/audit/03_api_contracts.md`` artifact table). Pure path
-    arithmetic; it does not touch the filesystem and creates nothing.
-    """
 
     run_dir: Path
 
@@ -200,13 +158,6 @@ class RunPaths:
 
 
 def load_run_summary(path: Path | str) -> RunSummary:
-    """Load a ``summary.json`` leniently into a ``RunSummary``.
-
-    Tolerant by design: any subset of keys is accepted and missing keys are
-    simply absent (``RunSummary`` is ``total=False``). Unknown extra keys are
-    preserved as-is. This does NOT validate or coerce values; it only parses
-    the JSON object. Raises only if the file is missing or not a JSON object.
-    """
 
     path = Path(path)
     with path.open("r", encoding="utf-8") as handle:

@@ -1,24 +1,3 @@
-"""Thin CLI that generates run-name tags/slugs for the case scripts.
-
-This is purely a *naming* helper: it formats the directory-name slugs and tags
-that the bash case scripts used to compute with inline Python heredocs. It does
-NO registration and NO volume I/O. Centralizing the slug formatting here keeps
-the run-folder names byte-for-byte identical to the old heredocs while removing
-the duplicated, must-stay-in-sync logic from the scripts.
-
-The formatting rules are copied verbatim from the previous inline snippets in
-``UIR/run_variance_case.sh`` and ``UIR/run_resolution_pair_case.sh`` so existing
-``UIR/runs/`` folder names (and the aggregators that parse them) are unaffected.
-
-Subcommands
------------
-- ``variance``  -> prints ``<degradation> <case_tag> <blur_sigma_xy> <blur_slug>``
-- ``resolution`` -> prints ``<blur_slug> <variance_padded>``
-- ``real_pair`` -> prints ``<pair_tag> <case_tag>``
-
-Each subcommand prints one space-separated line, matching what the scripts read
-with ``read -r ...`` from the old heredoc output.
-"""
 
 from __future__ import annotations
 
@@ -28,11 +7,6 @@ import sys
 
 
 def _blur_slug(sigma: float) -> str:
-    """Blur-sigma slug, identical to the old heredocs.
-
-    ``f"{sigma:.2f}".rstrip("0").rstrip(".").replace(".", "p")`` — e.g. 1.0 -> "1",
-    1.5 -> "1p5", 0.75 -> "0p75".
-    """
 
     return f"{sigma:.2f}".rstrip("0").rstrip(".").replace(".", "p")
 

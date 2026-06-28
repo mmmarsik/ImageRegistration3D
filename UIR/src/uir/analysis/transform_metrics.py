@@ -31,7 +31,6 @@ def count_match_rows(matches_path: Path) -> int:
 
 
 def read_match_points(matches_path: Path) -> tuple[np.ndarray, np.ndarray]:
-    """Read regSift3D matches as source and reference XYZ point arrays."""
     if not matches_path.exists():
         return np.empty((0, 3), dtype=np.float64), np.empty((0, 3), dtype=np.float64)
 

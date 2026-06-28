@@ -1,26 +1,3 @@
-"""Write a per-run ``run_config.json`` sidecar next to a run's outputs.
-
-This is purely additive: it writes ONE new file, ``run_config.json``, into a run
-directory, recording the scenario, the scalar parameters, and the resolved input
-paths for that run. It never reads, rewrites, or deletes any existing artifact
-(``summary.json`` and friends are untouched). Old runs that lack the file are
-unaffected; aggregators may treat it as optional.
-
-The file makes ``runs/`` self-describing: today a run's identity is reconstructed
-from its folder name plus whatever flat fields the reporter happened to write.
-``run_config.json`` records the exact scenario + parameters + the input stack/
-volume paths that produced the run, so reproduction does not depend on parsing
-the directory slug.
-
-CLI
----
-``python -m uir.experiment.run_config <run_dir> --scenario NAME``
-``  [--param KEY=VALUE ...] [--input KEY=PATH ...]``
-
-Values are stored as strings (the bash callers already hold them as strings).
-Numeric-looking params are left as strings on purpose: this is a faithful record
-of what the script passed, not a typed config object.
-"""
 
 from __future__ import annotations
 
@@ -38,11 +15,6 @@ def build_run_config(
     params: Mapping[str, str],
     inputs: Mapping[str, str],
 ) -> dict[str, object]:
-    """Assemble the run-config payload (no I/O).
-
-    Stable top-level shape: ``scenario`` (str), ``params`` (dict), ``inputs``
-    (dict of resolved input paths). Kept intentionally small and flat.
-    """
 
     return {
         "scenario": scenario,
@@ -57,11 +29,6 @@ def write_run_config(
     params: Mapping[str, str],
     inputs: Mapping[str, str],
 ) -> Path:
-    """Write ``<run_dir>/run_config.json`` and return its path.
-
-    Creates ``run_dir`` if missing. Only ever writes the single new sidecar file;
-    no existing file is read or modified.
-    """
 
     run_dir = Path(run_dir)
     run_dir.mkdir(parents=True, exist_ok=True)

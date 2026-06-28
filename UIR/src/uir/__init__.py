@@ -1,1 +1,0 @@
-"""UIR Python package."""

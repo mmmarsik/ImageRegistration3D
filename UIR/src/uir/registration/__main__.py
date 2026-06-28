@@ -1,20 +1,3 @@
-"""CLI entrypoint for the regSift3D wrapper.
-
-Invoked by the bash case scripts as::
-
-    python -m uir.registration \
-        --binary <regSift3D> [--resample] \
-        --matches <matches.csv> --transform <transform.csv> \
-        --reference <ref.nii> --moving <moving.nii> \
-        [-- <verbatim regSift3D option flags...>]
-
-Everything after a literal ``--`` separator is forwarded to ``regSift3D``
-verbatim and in order (the conditional ``--peak_thresh`` / ``--corner_thresh`` /
-``--nn_thresh`` / ``--err_thresh`` / ``--num_iter`` pairs). The wrapper exits
-with the same exit code ``regSift3D`` returns, so the scripts keep their
-existing ``reg_exit_code`` handling unchanged.
-"""
-
 from __future__ import annotations
 
 import argparse
@@ -25,7 +8,6 @@ from uir.registration.regsift3d import RegSift3D
 
 
 def _split_extra_args(argv: list[str]) -> tuple[list[str], list[str]]:
-    """Split argv at the first literal ``--`` into (parsed, verbatim)."""
 
     if "--" in argv:
         idx = argv.index("--")
