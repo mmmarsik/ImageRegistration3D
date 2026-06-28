@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from uir.perturbations.gaussian_noise import render_noisy_observation
+from uir.v1.perturbations.gaussian_noise import render_noisy_observation
 
 
 def parse_args() -> argparse.Namespace:

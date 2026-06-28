@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from uir.analysis.resolution_pair import make_resolution_pair
+from uir.v1.analysis.resolution_pair import make_resolution_pair
 
 
 def parse_args() -> argparse.Namespace:

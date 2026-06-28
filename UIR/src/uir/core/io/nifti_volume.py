@@ -5,7 +5,7 @@ from pathlib import Path
 import nibabel as nib
 import numpy as np
 
-from uir.observation.model import ObservationModel, write_observation_model
+from uir.core.observation.model import ObservationModel, write_observation_model
 
 
 def make_affine(sx: float, sy: float, sz: float) -> np.ndarray:

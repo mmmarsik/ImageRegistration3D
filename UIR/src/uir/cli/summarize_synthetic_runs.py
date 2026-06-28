@@ -3,12 +3,12 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from uir.analysis.synthetic_runs import (
+from uir.v1.analysis.synthetic_runs import (
     collect_synthetic_rows,
     render_synthetic_summary_lines,
     write_synthetic_outputs,
 )
-from uir.reporting.aggregate_plots import (
+from uir.v1.reporting.aggregate_plots import (
     plot_error_heatmap,
     plot_noise_accuracy,
     plot_noise_sweep,

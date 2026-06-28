@@ -5,8 +5,8 @@ from pathlib import Path
 import nibabel as nib
 import numpy as np
 
-from uir.io.nifti_volume import save_nifti_float32
-from uir.observation.model import read_observation_model
+from uir.core.io.nifti_volume import save_nifti_float32
+from uir.core.observation.model import read_observation_model
 
 
 def render_noisy_observation(

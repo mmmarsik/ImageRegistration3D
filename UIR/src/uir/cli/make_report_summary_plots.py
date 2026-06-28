@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from uir.reporting.aggregate_plots import (
+from uir.v1.reporting.aggregate_plots import (
     plot_real2_roi_comparison,
     plot_real_pair_threshold_comparison,
     plot_synthetic_roi_ladder,

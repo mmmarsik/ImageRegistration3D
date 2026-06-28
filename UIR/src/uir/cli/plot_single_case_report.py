@@ -5,7 +5,7 @@ import json
 import math
 from pathlib import Path
 
-from uir.analysis.transform_metrics import (
+from uir.v1.analysis.transform_metrics import (
     count_match_rows,
     infer_noisy_path,
     infer_requested_variance,
@@ -14,14 +14,14 @@ from uir.analysis.transform_metrics import (
     write_match_residuals_csv,
     write_matrix_element_errors_csv,
 )
-from uir.io.png_stack import inspect_png_stack
-from uir.reporting.single_case_plots import (
+from uir.core.io.png_stack import inspect_png_stack
+from uir.v1.reporting.single_case_plots import (
     plot_matrix_error_diagnostic,
     plot_match_residual_diagnostic,
     plot_noise_effect,
 )
-from uir.transforms.io import read_transform_csv, write_transform_csv
-from uir.transforms.roi import roi_expected_transform
+from uir.core.transforms.io import read_transform_csv, write_transform_csv
+from uir.core.transforms.roi import roi_expected_transform
 
 
 def parse_args() -> argparse.Namespace:

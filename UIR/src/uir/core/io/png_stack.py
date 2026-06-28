@@ -7,7 +7,7 @@ import re
 import numpy as np
 from PIL import Image
 
-from uir.observation.model import ObservationModel
+from uir.core.observation.model import ObservationModel
 
 
 @dataclass(frozen=True)

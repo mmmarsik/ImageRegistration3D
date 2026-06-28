@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from uir.analysis.real_pair_crop import plan_common_centered_roi_from_stacks
+from uir.v1.analysis.real_pair_crop import plan_common_centered_roi_from_stacks
 
 
 def parse_args() -> argparse.Namespace:

@@ -6,15 +6,15 @@ from pathlib import Path
 
 import numpy as np
 
-from uir.analysis.transform_metrics import (
+from uir.v1.analysis.transform_metrics import (
     count_match_rows,
     match_residual_stats,
     matrix_error_stats,
     write_match_residuals_csv,
     write_matrix_element_errors_csv,
 )
-from uir.reporting.single_case_plots import plot_match_residual_diagnostic, plot_matrix_error_diagnostic
-from uir.transforms.io import read_transform_csv, write_transform_csv
+from uir.v1.reporting.single_case_plots import plot_match_residual_diagnostic, plot_matrix_error_diagnostic
+from uir.core.transforms.io import read_transform_csv, write_transform_csv
 
 
 def parse_args() -> argparse.Namespace:

@@ -3,12 +3,12 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from uir.analysis.resolution_pair_runs import (
+from uir.v1.analysis.resolution_pair_runs import (
     collect_resolution_pair_rows,
     render_resolution_pair_lines,
     write_resolution_pair_outputs,
 )
-from uir.reporting.aggregate_plots import plot_resolution_pair_summary
+from uir.v1.reporting.aggregate_plots import plot_resolution_pair_summary
 
 
 def parse_args() -> argparse.Namespace:

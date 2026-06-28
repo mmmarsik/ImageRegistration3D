@@ -3,12 +3,12 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from uir.analysis.real_pair_roi_sweep import (
+from uir.v1.analysis.real_pair_roi_sweep import (
     collect_real_pair_roi_rows,
     render_real_pair_roi_lines,
     write_real_pair_roi_outputs,
 )
-from uir.reporting.aggregate_plots import plot_real_pair_roi_summary
+from uir.v1.reporting.aggregate_plots import plot_real_pair_roi_summary
 
 
 def parse_args() -> argparse.Namespace:

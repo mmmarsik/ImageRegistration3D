@@ -5,20 +5,20 @@ from pathlib import Path
 import nibabel as nib
 import numpy as np
 
-from uir.analysis.transform_metrics import (
+from uir.v1.analysis.transform_metrics import (
     count_match_rows,
     match_residual_stats,
     write_match_residuals_csv,
 )
-from uir.io.png_stack import inspect_png_stack
-from uir.reporting.single_case_plots import plot_match_residual_diagnostic
-from uir.reporting.real_pair_stacks import (
+from uir.core.io.png_stack import inspect_png_stack
+from uir.v1.reporting.single_case_plots import plot_match_residual_diagnostic
+from uir.v1.reporting.real_pair_stacks import (
     INTENSITY_CUBOID_RADIUS_DEFAULT,
     MODEL_CONSISTENT_THRESHOLD_DEFAULT,
     save_matched_keypoint_stacks,
     save_signed_diff_stack,
 )
-from uir.transforms.io import read_transform_csv
+from uir.core.transforms.io import read_transform_csv
 
 
 def summarize_real_pair_case(

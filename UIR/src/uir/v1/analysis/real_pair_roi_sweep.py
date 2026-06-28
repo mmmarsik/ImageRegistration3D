@@ -6,9 +6,9 @@ from pathlib import Path
 
 import numpy as np
 
-from uir.analysis.transform_metrics import matrix_error_stats
-from uir.transforms.io import read_transform_csv
-from uir.transforms.matrix import as_homogeneous_4x4 as _as_homogeneous_4x4
+from uir.v1.analysis.transform_metrics import matrix_error_stats
+from uir.core.transforms.io import read_transform_csv
+from uir.core.transforms.matrix import as_homogeneous_4x4 as _as_homogeneous_4x4
 
 
 CSV_COLUMNS = [

@@ -5,9 +5,9 @@ from pathlib import Path
 
 import numpy as np
 
-from uir.io.nifti_volume import make_affine, save_nifti
-from uir.io.png_stack import VOLUME_DTYPES, load_png_stack_volume
-from uir.observation.model import ObservationModel, read_observation_model
+from uir.core.io.nifti_volume import make_affine, save_nifti
+from uir.core.io.png_stack import VOLUME_DTYPES, load_png_stack_volume
+from uir.core.observation.model import ObservationModel, read_observation_model
 
 
 def parse_args() -> argparse.Namespace:

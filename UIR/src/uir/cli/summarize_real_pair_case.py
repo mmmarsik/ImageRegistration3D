@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from uir.analysis.real_pair_summary import summarize_real_pair_case
+from uir.v1.analysis.real_pair_summary import summarize_real_pair_case
 
 
 def parse_args() -> argparse.Namespace:

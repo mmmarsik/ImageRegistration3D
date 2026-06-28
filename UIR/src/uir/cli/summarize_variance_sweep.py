@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from uir.analysis.sweep_summary import collect_sweep_rows, render_sweep_lines, write_sweep_outputs
+from uir.v1.analysis.sweep_summary import collect_sweep_rows, render_sweep_lines, write_sweep_outputs
 
 
 def parse_args() -> argparse.Namespace:

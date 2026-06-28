@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy as np
 
-from uir.analysis.transform_metrics import (
+from uir.v1.analysis.transform_metrics import (
     apply_transform_to_points,
     read_match_points,
 )

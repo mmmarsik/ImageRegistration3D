@@ -6,7 +6,7 @@ import csv
 
 import numpy as np
 
-from uir.transforms.matrix import as_homogeneous_4x4 as _as_homogeneous_4x4
+from uir.core.transforms.matrix import as_homogeneous_4x4 as _as_homogeneous_4x4
 
 
 def infer_requested_variance(noisy_path: Path) -> float | None:

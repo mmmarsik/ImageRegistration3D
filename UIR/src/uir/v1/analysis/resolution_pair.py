@@ -5,9 +5,9 @@ from pathlib import Path
 
 import numpy as np
 
-from uir.io.nifti_volume import make_affine, save_nifti_float32
-from uir.io.png_stack import load_png_stack_volume
-from uir.transforms.io import write_transform_csv
+from uir.core.io.nifti_volume import make_affine, save_nifti_float32
+from uir.core.io.png_stack import load_png_stack_volume
+from uir.core.transforms.io import write_transform_csv
 
 
 def centered_crop_start(shape_xyz: tuple[int, int, int], crop_size_xyz: tuple[int, int, int]) -> tuple[int, int, int]:

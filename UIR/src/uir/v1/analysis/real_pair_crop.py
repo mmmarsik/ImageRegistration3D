@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from uir.io.png_stack import inspect_png_stack
+from uir.core.io.png_stack import inspect_png_stack
 
 
 def centered_roi_start(full_shape_xyz: tuple[int, int, int], roi_size_xyz: tuple[int, int, int]) -> tuple[int, int, int]:
