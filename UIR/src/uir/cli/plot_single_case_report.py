@@ -5,7 +5,7 @@ import json
 import math
 from pathlib import Path
 
-from uir.v1.analysis.transform_metrics import (
+from uir.core.transforms.metrics import (
     count_match_rows,
     infer_noisy_path,
     infer_requested_variance,

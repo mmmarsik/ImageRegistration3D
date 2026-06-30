@@ -6,7 +6,7 @@ import nibabel as nib
 import numpy as np
 from PIL import Image
 
-from uir.v1.analysis.transform_metrics import apply_transform_to_points, read_match_points
+from uir.core.transforms.metrics import apply_transform_to_points, read_match_points
 from uir.core.transforms.matrix import as_homogeneous_4x4 as _as_homogeneous_4x4
 
 

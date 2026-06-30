@@ -5,7 +5,7 @@ from pathlib import Path
 import nibabel as nib
 import numpy as np
 
-from uir.v1.analysis.transform_metrics import (
+from uir.core.transforms.metrics import (
     count_match_rows,
     match_residual_stats,
     write_match_residuals_csv,

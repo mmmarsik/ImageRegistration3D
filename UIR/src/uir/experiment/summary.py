@@ -7,8 +7,6 @@ from pathlib import Path
 from typing import TypedDict
 
 
-# match_residual_stats keys, kept as a stable schema (see canonical decision
-# in the module docstring section "Open question" below).
 class MatchResidualStats(TypedDict, total=False):
 
     match_residual_count: int
@@ -166,5 +164,4 @@ def load_run_summary(path: Path | str) -> RunSummary:
         raise ValueError(
             f"Expected a JSON object in {path}, got {type(data).__name__}"
         )
-    # The cast is documentation-only; we do not narrow or drop keys.
     return data  # type: ignore[return-value]

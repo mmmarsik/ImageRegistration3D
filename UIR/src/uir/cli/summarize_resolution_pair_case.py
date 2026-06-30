@@ -6,7 +6,7 @@ from pathlib import Path
 
 import numpy as np
 
-from uir.v1.analysis.transform_metrics import (
+from uir.core.transforms.metrics import (
     count_match_rows,
     match_residual_stats,
     matrix_error_stats,
